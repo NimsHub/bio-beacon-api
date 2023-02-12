@@ -20,7 +20,7 @@ public class BioBeaconApplication {
         @GetMapping("/")
         public String hello(){
             logger.error("ERROR");
-            return "Up and Running";
+            return "Deployed and Running...";
         }
     }
 }
