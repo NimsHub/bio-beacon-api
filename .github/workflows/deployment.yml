@@ -1,0 +1,35 @@
+name: Deploy to Beanstalk
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml | cd target
+
+      - name: Deploy to EB
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: bio-beacon-api
+          environment_name: Biobeaconapi-env
+          version_label: ${{github.SHA}}
+          version_description: ${{github.SHA}}
+          region: ${{ secrets.AWS_REGION }}
+          deployment_package: '**.jar'
+
