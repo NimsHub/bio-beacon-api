@@ -27,6 +27,7 @@ jobs:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: bio-beacon-api
+          existing_bucket_name: bio-beacon-app
           environment_name: Biobeaconapi-env
           version_label: ${{github.SHA}}
           version_description: ${{github.SHA}}
