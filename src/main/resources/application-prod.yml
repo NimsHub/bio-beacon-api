@@ -1,0 +1,26 @@
+server:
+  port: 5000
+
+spring:
+  profiles:
+    active: dev
+  security:
+    user:
+      name: nirmala
+      password: nims
+
+  datasource:
+    url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
+    username: bio-beacon-admin
+    password: DUE1E9YrbtOCmbAZTm74rw
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
