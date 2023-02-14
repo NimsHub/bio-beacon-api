@@ -2,8 +2,6 @@ server:
   port: 5000
 
 spring:
-  profiles:
-    active: dev
   security:
     user:
       name: nirmala
