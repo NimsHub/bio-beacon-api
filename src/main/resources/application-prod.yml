@@ -22,3 +22,16 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  flyway:
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    schemas: public
+    url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
+    user: bio-beacon-admin
+    password: DUE1E9YrbtOCmbAZTm74rw
+    enabled: false
+
+logging.level:
+  org.hibernate: error
+  com.nimshub: trace
