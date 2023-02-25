@@ -30,7 +30,7 @@ spring:
     url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
     user: bio-beacon-admin
     password: DUE1E9YrbtOCmbAZTm74rw
-    enabled: false
+    enabled: true
 
 logging.level:
   org.hibernate: error
