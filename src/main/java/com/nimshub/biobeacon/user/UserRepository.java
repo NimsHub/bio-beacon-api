@@ -1,4 +1,4 @@
-package com.nimshub.biobeacon.UserService;
+package com.nimshub.biobeacon.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
