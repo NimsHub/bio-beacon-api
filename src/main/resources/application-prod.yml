@@ -2,10 +2,6 @@ server:
   port: 5000
 
 spring:
-  security:
-    user:
-      name: nirmala
-      password: nims
 
   datasource:
     url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
