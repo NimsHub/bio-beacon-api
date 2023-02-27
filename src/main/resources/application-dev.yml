@@ -1,11 +1,5 @@
 server:
   port: 8080
-  tomcat:
-    threads:
-      max: 1
-
-
-SECRET_KEY: 357638792F423F4528482B4D6251655468576D597133743677397A2443264629
 
 spring:
 
