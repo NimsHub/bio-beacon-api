@@ -1,6 +1,7 @@
 package com.nimshub.biobeacon.session;
 
 import com.nimshub.biobeacon.session.dto.CreateSessionRequest;
+import com.nimshub.biobeacon.session.dto.StartSessionRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,9 +17,15 @@ import java.util.List;
 public class SessionController {
     private final SessionService sessionService;
     @PostMapping("/create-session")
-    public ResponseEntity<Session> createSession(@RequestBody CreateSessionRequest request){
+    public ResponseEntity<String> createSession(@RequestBody CreateSessionRequest request){
         log.info("creating new session");
-        Session session = sessionService.createSession(request);
+       sessionService.createSession(request);
+        return new  ResponseEntity<>("session updated", HttpStatus.CREATED);
+    }
+    @PostMapping("/start-session")
+    public ResponseEntity<Session> startSession(@RequestBody StartSessionRequest request){
+        log.info("starting new session");
+        Session session = sessionService.startSession(request);
         return new  ResponseEntity<>(session, HttpStatus.CREATED);
     }
     @GetMapping("/{userid}")
