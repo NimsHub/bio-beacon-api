@@ -10,6 +10,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This interface holds all the database calls related to sessions
+ */
 public interface SessionRepository extends JpaRepository<Session,Integer> {
     Optional<List<Session>>  findAllByUserId(@NotNull(message = "User ID cannot be null for a session") Integer userId);
     @Modifying
@@ -22,7 +25,8 @@ public interface SessionRepository extends JpaRepository<Session,Integer> {
             " end_date_time = :endDateTime," +
             " session_duration = :sessionDuration," +
             " is_complete = true\n" +
-            "WHERE device_id = :deviceId AND is_complete = false"
+            "WHERE device_id = :deviceId AND is_complete = false "+
+            "ORDER BY create_date_time DESC LIMIT 1 "
     )
     void updateSession(
             @Param(value = "deviceId") Long deviceId,
