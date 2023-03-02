@@ -14,7 +14,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 
-// This class defines Session Entity and its properties
+/**
+This class defines Session Entity and its properties
+ *
+  */
 
 @Data
 @NoArgsConstructor

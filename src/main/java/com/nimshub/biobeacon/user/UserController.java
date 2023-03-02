@@ -1,10 +1,8 @@
 package com.nimshub.biobeacon.user;
 
 import lombok.RequiredArgsConstructor;
-import org.flywaydb.core.internal.util.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,13 +16,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/users")
 public class UserController {
+
     private final UserService userService;
     Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<User>>  getUser(){
-        logger.trace("user controller invoked");
+    public ResponseEntity<List<User>>  getUsers(){
         List<User> users = userService.getUsers();
+        logger.trace("getUsers controller called method : userService.getUsers");
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
