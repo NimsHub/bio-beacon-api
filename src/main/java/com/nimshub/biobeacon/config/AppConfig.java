@@ -1,7 +1,9 @@
 package com.nimshub.biobeacon.config;
 
+import com.nimshub.biobeacon.device.DeviceRepository;
 import com.nimshub.biobeacon.user.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,10 +19,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class AppConfig {
     private final UserRepository userRepository;
+    private final DeviceRepository deviceRepository;
+
     @Bean
     public UserDetailsService userDetailsService(){
         return username -> userRepository.findByEmail(username)
                 .orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
+    }
+    @Bean
+    public FilterRegistrationBean<ApiKeyFilter> ApiKeyFilter() {
+        FilterRegistrationBean<ApiKeyFilter> registration = new FilterRegistrationBean<>();
+        registration.setFilter(new ApiKeyFilter(deviceRepository));
+        registration.addUrlPatterns("/api/v1/session/update-session");
+        return registration;
     }
 
     @Bean
