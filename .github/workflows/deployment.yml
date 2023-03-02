@@ -33,5 +33,5 @@ jobs:
           version_description: ${{github.SHA}}
           region: ${{ secrets.AWS_REGION }}
           deployment_package: target/bio-beacon-0.0.1-SNAPSHOT.jar
-          wait_for_deployment:false
+          wait_for_deployment: false
 
