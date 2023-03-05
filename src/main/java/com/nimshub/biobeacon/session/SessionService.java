@@ -35,10 +35,10 @@ public class SessionService {
      * @return List<Session>
      */
     public List<Session> getSessionsByUserId(Integer userId) {
-        log.info("getting all the sessions for the user id :" + userId);
+        log.info("getting all the sessions for the user id :{}", userId);
         List<Session> sessions = sessionRepository.findAllByUserId(userId).orElseThrow();
         if (sessions.isEmpty()) {
-            log.info("Sessions not found for user ID :" + userId);
+            log.info("Sessions not found for user ID : {}", userId);
             throw new SessionNotFoundException("Sessions not found for user ID :" + userId);
         }
         return sessions;
