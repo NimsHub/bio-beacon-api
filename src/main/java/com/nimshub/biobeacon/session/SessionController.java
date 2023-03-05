@@ -1,10 +1,8 @@
 package com.nimshub.biobeacon.session;
 
-import com.nimshub.biobeacon.config.JwtAuthFilter;
 import com.nimshub.biobeacon.session.dto.CreateSessionRequest;
 import com.nimshub.biobeacon.session.dto.StartSessionRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -23,19 +21,19 @@ public class SessionController {
     @PostMapping("/create-session")
     public ResponseEntity<?> createSession(@RequestBody StartSessionRequest request){
             Session session = sessionService.createSession(request);
-            logger.info("new session has been created");
+            logger.info("new session has been created from : {}",request);
             return new  ResponseEntity<>(session, HttpStatus.CREATED);
     }
     @PostMapping("/update-session")
     public ResponseEntity<String> updateSession(@RequestBody CreateSessionRequest request){
             sessionService.updateSession(request);
-            logger.info("session has been updated");
+            logger.info("session from {} has been updated",request);
             return new  ResponseEntity<>(HttpStatus.OK);
     }
     @GetMapping("/{userid}")
     public ResponseEntity<?> getSessionsByUserId(@PathVariable("userid") Integer userid){
             List<Session> sessions = sessionService.getSessionsByUserId(userid);
-            logger.info("getting sessions of the user : " + userid);
+            logger.info("getting sessions of the user : {}", userid);
             return new ResponseEntity<>(sessions,HttpStatus.OK);
     }
 }
