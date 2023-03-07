@@ -1,9 +1,9 @@
 package com.nimshub.biobeacon.auth;
 
-import com.nimshub.biobeacon.user.Role;
+import com.nimshub.biobeacon.config.JwtService;
+import com.nimshub.biobeacon.exceptions.UserAlreadyExistsException;
 import com.nimshub.biobeacon.user.User;
 import com.nimshub.biobeacon.user.UserRepository;
-import com.nimshub.biobeacon.config.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,33 +23,38 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     Logger logger = LoggerFactory.getLogger(AuthService.class);
-    public AuthenticationResponse register(RegisterRequest request) {
+
+    public RegistrationResponse register(RegisterRequest request) {
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new UserAlreadyExistsException("User with email " + request.getEmail() + " already exists");
+        }
 
         var user = User.builder()
-                .firstname(request.getFirstName())
-                .lastname(request.getLastName())
+                .id(UUID.randomUUID())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
+                .role(request.getRole())
                 .build();
 
-        userRepository.save(user);
+        User registeredUser = userRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
         logger.info("User registration success");
-        return AuthenticationResponse.builder()
+        return RegistrationResponse.builder()
+                .id(registeredUser.getId())
                 .token(jwtToken)
                 .build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
-               new UsernamePasswordAuthenticationToken(
+                new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
         var jwtToken = jwtService.generateToken(user);
         logger.info("User authentication success");
 
