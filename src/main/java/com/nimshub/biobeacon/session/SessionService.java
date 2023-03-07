@@ -1,22 +1,23 @@
 package com.nimshub.biobeacon.session;
 
-import com.nimshub.biobeacon.device.Device;
+import com.nimshub.biobeacon.athlete.AthleteRepository;
 import com.nimshub.biobeacon.device.DeviceRepository;
 import com.nimshub.biobeacon.exceptions.DeviceNotFoundException;
 import com.nimshub.biobeacon.exceptions.SessionNotFoundException;
 import com.nimshub.biobeacon.session.dto.CreateSessionRequest;
-import com.nimshub.biobeacon.session.dto.StartSessionRequest;
-import com.nimshub.biobeacon.user.UserRepository;
+import com.nimshub.biobeacon.session.dto.UpdateSessionRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * This class provides all the services related to sessions
@@ -26,67 +27,68 @@ import java.util.List;
 @Slf4j
 public class SessionService {
     private final SessionRepository sessionRepository;
-    private final UserRepository userRepository;
+    private final AthleteRepository athleteRepository;
     private final DeviceRepository deviceRepository;
 
     /**
-     *
-     * @param userId : Integer
+     * @param id : UUID
      * @return List<Session>
      */
-    public List<Session> getSessionsByUserId(Integer userId) {
-        log.info("getting all the sessions for the user id :{}", userId);
-        List<Session> sessions = sessionRepository.findAllByUserId(userId).orElseThrow();
+    public List<Session> getSessionsByAthleteId(UUID id) {
+        log.info("getting all the sessions for the user id :{}", id);
+        List<Session> sessions = sessionRepository.findAllByAthleteId(id).orElseThrow();
         if (sessions.isEmpty()) {
-            log.info("Sessions not found for user ID : {}", userId);
-            throw new SessionNotFoundException("Sessions not found for user ID :" + userId);
+            log.info("Sessions not found for user ID : {}", id);
+            throw new SessionNotFoundException("Sessions not found for user ID :" + id);
         }
         return sessions;
     }
 
     /**
      * This method created a new session
+     *
      * @param request : StartSessionRequest
      * @return Session
      */
-    public Session createSession(StartSessionRequest request){
+    public Session createSession(CreateSessionRequest request) {
 
         deviceRepository.findById(request.getDeviceId())
-                .orElseThrow(()-> new DeviceNotFoundException("Device Not Found"));
-        var user = userRepository.findByEmail(request.getUserEmail())
-                .orElseThrow(()-> new UsernameNotFoundException("User Not Found"));
+                .orElseThrow(() -> new DeviceNotFoundException("Device Not Found"));
+        var athlete = athleteRepository.findByEmail(request.getUserEmail())
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
 
-                Session session = Session.builder()
-                        .deviceId(request.getDeviceId())
-                        .userId(user.getId())
-                        .build();
+        Session session = Session.builder()
+                .id(UUID.randomUUID())
+                .deviceId(request.getDeviceId())
+                .athleteId(athlete.getId())
+                .build();
         return sessionRepository.save(session);
     }
 
     /**
      * This method updates the data in created session
+     *
      * @param request : CreateSessionRequest
      */
     @Transactional
-    public void updateSession(CreateSessionRequest request){
-        deviceRepository.findById(request.getDeviceId())
-                .orElseThrow(()-> new DeviceNotFoundException("Device Not Found"));
+    public void updateSession(UpdateSessionRequest request) {
 
-      sessionRepository.updateSession(
+        sessionRepository.updateSession(
                 request.getDeviceId(),
                 request.getHeartRate(),
                 request.getBloodPressure(),
                 request.getRespirationRate(),
                 request.getStartDateTime(),
                 request.getEndDateTime(),
-              getDateDifferenceInSeconds(request.getStartDateTime(),request.getEndDateTime())
-                );
+                getDateDifferenceInSeconds(request.getStartDateTime(), request.getEndDateTime())
+        );
     }
 
     /**
      * This method calculate time duration
+     *
      * @param startDate : Date
-     * @param endDate : Date
+     * @param endDate   : Date
      * @return Long
      */
     public long getDateDifferenceInSeconds(LocalDateTime startDate, LocalDateTime endDate) {
