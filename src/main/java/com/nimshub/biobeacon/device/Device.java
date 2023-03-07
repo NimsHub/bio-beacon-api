@@ -1,7 +1,6 @@
 package com.nimshub.biobeacon.device;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +16,8 @@ import java.time.LocalDateTime;
 @Entity
 public class Device {
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "DEVICE_SEQ", sequenceName = "DEVICE_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DEVICE_SEQ")
     private Long id;
     private String apiKey;
     @CreationTimestamp
