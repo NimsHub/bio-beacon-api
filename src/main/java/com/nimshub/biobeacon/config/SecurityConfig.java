@@ -1,6 +1,5 @@
 package com.nimshub.biobeacon.config;
 
-import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,14 +21,16 @@ public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**","/")
-                .permitAll()
-                .requestMatchers("/api/v1/session/update-session")
+                .requestMatchers("/api/v1/auth/**", "/",
+                        "/api/v1/session/update-session",
+                        "/api/v1/coaches/get-all",
+                        "/api/v1/coaches/create-coach",
+                        "/api/v1/athletes/create-athlete")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
