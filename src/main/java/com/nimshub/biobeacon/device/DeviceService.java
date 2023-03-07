@@ -11,14 +11,22 @@ import java.util.UUID;
 public class DeviceService {
     private final DeviceRepository deviceRepository;
 
-    public Device createDevice(){
+    /**
+     * This method creates new Device
+     * @return : Device
+     */
+    public Device createDevice() {
         Device device = Device.builder()
                 .apiKey(UUID.randomUUID().toString())
                 .build();
         return deviceRepository.save(device);
     }
-    public List<Device> getAllDevices(){
-        List<Device> devices = deviceRepository.findAll();
-        return devices;
+
+    /**
+     * This method retrieves all the devices
+     * @return : List<Device>
+     */
+    public List<Device> getAllDevices() {
+        return deviceRepository.findAll();
     }
 }

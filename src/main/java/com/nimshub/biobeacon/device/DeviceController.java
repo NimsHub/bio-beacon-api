@@ -16,14 +16,16 @@ import java.util.List;
 @RequestMapping("/api/v1/devices")
 public class DeviceController {
     private final DeviceService deviceService;
+
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<Device> createDevice(){
-        return new ResponseEntity<>(deviceService.createDevice(), HttpStatus.CREATED) ;
+    public ResponseEntity<Device> createDevice() {
+        return new ResponseEntity<>(deviceService.createDevice(), HttpStatus.CREATED);
     }
+
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<Device>> getAllDevices(){
-        return new ResponseEntity<>(deviceService.getAllDevices(), HttpStatus.OK) ;
+    public ResponseEntity<List<Device>> getAllDevices() {
+        return new ResponseEntity<>(deviceService.getAllDevices(), HttpStatus.OK);
     }
 }

@@ -12,31 +12,38 @@ import org.springframework.lang.NonNull;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+
 @RequiredArgsConstructor
 public class ApiKeyFilter extends OncePerRequestFilter {
     private final DeviceRepository deviceRepository;
 
     @Override
     protected void doFilterInternal(
-           @NonNull HttpServletRequest request,
-           @NonNull HttpServletResponse response,
-           @NonNull FilterChain filterChain) throws ServletException, IOException {
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain) throws ServletException, IOException, DeviceNotFoundException {
 
-        final String deviceId = request.getHeader("DeviceId");
+        final String deviceId = request.getHeader("X-Device-Id");
         final String apiKey = request.getHeader("X-Api-Key");
+        Device device = new Device();
 
-            if(deviceId.isBlank()){
-                response.getWriter().write("Device ID was not included in the header");
-                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                logger.warn("Device ID was not included in the header");
-                return;
-            }
+        if (deviceId.isBlank()) {
+            response.getWriter().write("Device ID was not included in the header");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            logger.warn("Device ID was not included in the header");
+            return;
+        }
+        try {
+            device = deviceRepository.findById(Long.parseLong(deviceId))
+                    .orElseThrow(() -> new DeviceNotFoundException("Device Not Found"));
+        } catch (DeviceNotFoundException e) {
+            response.getWriter().write("Device with id :" + deviceId + " not found");
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
 
-        Device device = deviceRepository.findById(Long.parseLong(deviceId))
-                .orElseThrow(()-> new DeviceNotFoundException("Device Not Found"));
-
-        if(device.getApiKey().equals(apiKey)){
-            filterChain.doFilter(request,response);
+        if (device.getApiKey().equals(apiKey)) {
+            filterChain.doFilter(request, response);
             return;
         }
         response.getWriter().write("Invalid API Key");

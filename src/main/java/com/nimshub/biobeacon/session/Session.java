@@ -1,9 +1,6 @@
 package com.nimshub.biobeacon.session;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,11 +10,11 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.UUID;
 
 /**
-This class defines Session Entity and its properties
- *
-  */
+ * This class defines Session Entity and its properties
+ */
 
 @Data
 @NoArgsConstructor
@@ -26,10 +23,12 @@ This class defines Session Entity and its properties
 @Builder
 public class Session {
     @Id
-    @GeneratedValue
-    private Integer sessionId;
+    @SequenceGenerator(name = "SESSION_SEQ", sequenceName = "SESSION_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SESSION_SEQ")
+    private Integer key;
+    private UUID id;
     @NotNull(message = "User ID cannot be null for a session")
-    private Integer userId;
+    private UUID athleteId;
     @NotNull(message = "Device ID cannot be null for a session")
     private Long deviceId;
     @Column(columnDefinition = "boolean default false")

@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping()
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<List<User>>  getUsers(){
+    public ResponseEntity<List<User>> getUsers() {
         List<User> users = userService.getUsers();
         logger.trace("getUsers controller called method : userService.getUsers");
         return new ResponseEntity<>(users, HttpStatus.OK);

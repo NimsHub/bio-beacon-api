@@ -11,14 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class BioBeaconApplication {
 
     Logger logger = LoggerFactory.getLogger(helloController.class);
+
     public static void main(String[] args) {
         SpringApplication.run(BioBeaconApplication.class, args);
     }
 
     @RestController
-    public class helloController{
+    public class helloController {
         @GetMapping("/")
-        public String hello(){
+        public String hello() {
             logger.error("ERROR");
             return "Deployed and Running...";
         }

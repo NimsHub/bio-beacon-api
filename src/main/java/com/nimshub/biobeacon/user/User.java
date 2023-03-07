@@ -2,43 +2,42 @@ package com.nimshub.biobeacon.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name="_user")
+@Table(
+        name = "_user",
+        uniqueConstraints = @UniqueConstraint(name = "email_cons",
+                columnNames = "email"))
 public class User implements UserDetails {
     @Id
-    @GeneratedValue
-    private Integer id;
-    private String firstname;
-    private String lastname;
+    @SequenceGenerator(name = "USER_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
+    private Integer key;
+    private UUID id;
     @Email
+    @NotBlank
     private String email;
     private String password;
-    private String mobile;
-    private String address;
-    @Past
-    private Date dateOfBirth;
-    @CreationTimestamp
-    private Date joinedDate;
     @Enumerated(EnumType.STRING)
     private Role role;
+    private boolean isEnabled = true;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
