@@ -3,7 +3,6 @@ package com.nimshub.biobeacon.coach;
 import com.nimshub.biobeacon.auth.AuthenticationResponse;
 import com.nimshub.biobeacon.coach.dto.CoachDetailsResponse;
 import com.nimshub.biobeacon.coach.dto.CreateCoachRequest;
-import com.nimshub.biobeacon.session.SessionController;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
