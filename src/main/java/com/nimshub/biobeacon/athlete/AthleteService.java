@@ -25,6 +25,7 @@ public class AthleteService {
 
     /**
      * This method creates new Athlete
+     *
      * @param request : CreateAthleteRequest
      * @return : AuthenticationResponse
      */
@@ -62,6 +63,7 @@ public class AthleteService {
 
     /**
      * This method retrieves all the Athletes
+     *
      * @return : List<AthleteDetailsResponse>
      */
     public List<AthleteDetailsResponse> getAthletes() {
@@ -86,6 +88,7 @@ public class AthleteService {
 
     /**
      * This method retrieves athlete details from the token
+     *
      * @param authHeader : String
      * @return : AthleteDetailsResponse
      */
@@ -112,6 +115,7 @@ public class AthleteService {
 
     /**
      * This method retrieves athletes of specific Coach
+     *
      * @param id : UUID
      * @return : List<AthleteDetailsResponse>
      */

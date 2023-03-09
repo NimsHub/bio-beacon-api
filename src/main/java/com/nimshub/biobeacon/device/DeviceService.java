@@ -13,6 +13,7 @@ public class DeviceService {
 
     /**
      * This method creates new Device
+     *
      * @return : Device
      */
     public Device createDevice() {
@@ -24,6 +25,7 @@ public class DeviceService {
 
     /**
      * This method retrieves all the devices
+     *
      * @return : List<Device>
      */
     public List<Device> getAllDevices() {
