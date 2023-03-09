@@ -33,6 +33,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> handleAthleteNotFoundException(AthleteNotFoundException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException e) {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);

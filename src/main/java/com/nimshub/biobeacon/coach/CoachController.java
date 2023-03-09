@@ -22,7 +22,7 @@ public class CoachController {
     @PostMapping("/create-coach")
     public ResponseEntity<AuthenticationResponse> createCoach(@RequestBody CreateCoachRequest request) {
         AuthenticationResponse authenticationResponse = coachService.createCoach(request);
-        logger.info("new coach has been created from : {}",request);
+        logger.info("new coach has been created from : {}", request);
         return new ResponseEntity<>(authenticationResponse, HttpStatus.CREATED);
     }
 
@@ -36,7 +36,7 @@ public class CoachController {
     @GetMapping("/get-coach")
     public ResponseEntity<CoachDetailsResponse> getCoach(@RequestHeader("Authorization") String authHeader) {
         CoachDetailsResponse response = coachService.getCoach(authHeader);
-        logger.info("coach details retrieved : {}",response);
+        logger.info("coach details retrieved : {}", response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

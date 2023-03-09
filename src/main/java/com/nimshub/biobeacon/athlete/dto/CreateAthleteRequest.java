@@ -1,12 +1,14 @@
 package com.nimshub.biobeacon.athlete.dto;
 
 import com.nimshub.biobeacon.user.Gender;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
+@Builder
 public class CreateAthleteRequest {
     private UUID coachId;
     private String firstname;
