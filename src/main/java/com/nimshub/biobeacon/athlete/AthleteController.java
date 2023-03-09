@@ -3,7 +3,6 @@ package com.nimshub.biobeacon.athlete;
 import com.nimshub.biobeacon.athlete.dto.AthleteDetailsResponse;
 import com.nimshub.biobeacon.athlete.dto.CreateAthleteRequest;
 import com.nimshub.biobeacon.auth.AuthenticationResponse;
-import com.nimshub.biobeacon.session.SessionController;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +20,11 @@ import java.util.UUID;
 public class AthleteController {
     private final AthleteService athleteService;
     Logger logger = LoggerFactory.getLogger(AthleteController.class);
+
     @PostMapping("/create-athlete")
     public ResponseEntity<AuthenticationResponse> createAthlete(@RequestBody CreateAthleteRequest request) {
         AuthenticationResponse authenticationResponse = athleteService.createAthlete(request);
-        logger.info("new athlete has been created from : {}",request);
+        logger.info("new athlete has been created from : {}", request);
         return new ResponseEntity<>(authenticationResponse, HttpStatus.CREATED);
     }
 
@@ -38,7 +38,7 @@ public class AthleteController {
     @GetMapping("/get-athlete")
     public ResponseEntity<AthleteDetailsResponse> getAthlete(@RequestHeader("Authorization") String authHeader) {
         AthleteDetailsResponse response = athleteService.getAthlete(authHeader);
-        logger.info("athlete details retrieved : {}",response);
+        logger.info("athlete details retrieved : {}", response);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -46,7 +46,7 @@ public class AthleteController {
     @PreAuthorize("hasAuthority('COACH')")
     public ResponseEntity<List<AthleteDetailsResponse>> getAthletesByCoachId(@PathVariable UUID id) {
         List<AthleteDetailsResponse> athletes = athleteService.getAthletesByCoachId(id);
-        logger.info("athletes of coach : {} retrieved",id);
+        logger.info("athletes of coach : {} retrieved", id);
         return new ResponseEntity<>(athletes, HttpStatus.OK);
     }
 }
