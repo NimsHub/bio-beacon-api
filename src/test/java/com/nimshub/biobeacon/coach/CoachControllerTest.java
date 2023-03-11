@@ -24,17 +24,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CoachControllerTest {
+    private static CoachDetailsResponse coachDetailsResponse;
     @Mock
     private CoachService coachService;
     @InjectMocks
     private CoachController coachController;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    private static CoachDetailsResponse coachDetailsResponse;
 
     @BeforeAll
     static void setUpData() {
@@ -48,6 +42,11 @@ class CoachControllerTest {
                 .mobile("1234567890")
                 .address("123.Main St")
                 .build();
+    }
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

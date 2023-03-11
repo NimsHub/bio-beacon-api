@@ -24,23 +24,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class AthleteControllerTest {
+    private static AthleteDetailsResponse athleteDetailsResponse;
     @Mock
     private AthleteService athleteService;
     @InjectMocks
     private AthleteController athleteController;
 
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-
-    }
-
-    private static AthleteDetailsResponse athleteDetailsResponse;
-
     @BeforeAll
     static void setUpData() {
         athleteDetailsResponse = AthleteDetailsResponse.builder()
-                .id(UUID.randomUUID())
+                .athleteId(UUID.randomUUID())
                 .coachId(UUID.randomUUID())
                 .firstname("John")
                 .lastname("Doe")
@@ -53,6 +46,12 @@ class AthleteControllerTest {
                 .address("123.Main St")
                 .occupation(null)
                 .build();
+    }
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+
     }
 
     @Test
