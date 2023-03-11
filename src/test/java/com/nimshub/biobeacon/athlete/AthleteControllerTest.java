@@ -132,7 +132,7 @@ class AthleteControllerTest {
         when(athleteService.getAthletesByCoach(any())).thenReturn(Collections.singletonList(athleteResponse));
 
         // when
-        ResponseEntity<List<AthleteResponse>> response = athleteController.getAthletesByCoachId("token");
+        ResponseEntity<List<AthleteResponse>> response = athleteController.getAthletesByCoach("token......");
 
         // then
         verify(athleteService).getAthletesByCoach(any());
