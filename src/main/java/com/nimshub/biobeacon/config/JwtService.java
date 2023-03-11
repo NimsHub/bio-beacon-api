@@ -64,10 +64,21 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    /**
+     * This method generates Jwt token with User details
+     * @param userDetails : UserDetails
+     * @return : String
+     */
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
 
+    /**
+     * This method generates Jwt token with User details and extraClaims
+     * @param extraClaims : Map<String, Object>
+     * @param userDetails : UserDetails
+     * @return : String
+     */
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts
                 .builder()
@@ -84,10 +95,20 @@ public class JwtService {
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
+    /**
+     * This method checks if the token is expired or not
+     * @param token : String
+     * @return boolean
+     */
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
+    /**
+     * This method extract the expiration time out of token
+     * @param token : String
+     * @return Date
+     */
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }

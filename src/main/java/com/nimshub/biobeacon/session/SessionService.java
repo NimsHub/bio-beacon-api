@@ -92,6 +92,10 @@ public class SessionService {
         return duration.getSeconds();
     }
 
+    /**
+     * This method updates the session details
+     * @param request : UpdateSessionRequest
+     */
     @Transactional
     public void updateSessionDetails(UpdateSessionRequest request) {
 
@@ -115,6 +119,11 @@ public class SessionService {
         sessionDetailsRepositoryRepository.save(sessionDetails);
     }
 
+    /**
+     * This method retrieves the details of a session
+     * @param sessionId : UUID
+     * @return SessionDetailsResponse
+     */
     public SessionDetailsResponse getSessionDetails(UUID sessionId) {
         Session session = sessionRepository.findBySessionId(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException("Session with ID : [%s] not found"

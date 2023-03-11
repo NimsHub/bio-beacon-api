@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/session")
+@RequestMapping("/api/v1/sessions")
 @RequiredArgsConstructor
 public class SessionController {
     private final SessionService sessionService;
@@ -38,14 +38,14 @@ public class SessionController {
     }
 
     @PostMapping("/update-session")
-    public ResponseEntity<String> test(@RequestBody UpdateSessionRequest request) {
+    public ResponseEntity<String> updateSession(@RequestBody UpdateSessionRequest request) {
         sessionService.updateSessionDetails(request);
         logger.info("session from {} has been updated", request);
         return new ResponseEntity<>("session details has been updated", HttpStatus.OK);
     }
 
     @GetMapping("/session/{id}")
-    public ResponseEntity<SessionDetailsResponse> getSessionDetails(@PathVariable("id") UUID id) {
+    public ResponseEntity<SessionDetailsResponse> getSessionDetailsBySessionId(@PathVariable("id") UUID id) {
         SessionDetailsResponse sessionDetailsResponse = sessionService.getSessionDetails(id);
         logger.info("getting session details of the session : {}", id);
         return new ResponseEntity<>(sessionDetailsResponse, HttpStatus.OK);

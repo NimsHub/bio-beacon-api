@@ -58,10 +58,12 @@ public class AthleteController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/update-athlete/{id}")
-    public ResponseEntity<String> updateAthlete(@RequestBody CreateAthleteRequest request, @PathVariable UUID id) {
-        athleteService.updateAthlete(request, id);
+    @PutMapping("/update-athlete")
+    public ResponseEntity<AuthenticationResponse> updateAthlete(
+            @RequestBody CreateAthleteRequest request, @RequestHeader("Authorization") String authHeader) {
+
+        AuthenticationResponse response = athleteService.updateAthlete(request, authHeader);
         logger.info("successfully updated athlete : {}", request);
-        return new ResponseEntity<>("Profile Updated", HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

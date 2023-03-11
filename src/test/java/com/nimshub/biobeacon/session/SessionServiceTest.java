@@ -17,8 +17,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.assertj.core.api.Assertions.*;
 
 class SessionServiceTest {
     private static final UUID athleteId = UUID.randomUUID();

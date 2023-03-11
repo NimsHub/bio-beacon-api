@@ -141,6 +141,11 @@ public class AthleteService {
                         .build()).toList();
     }
 
+    /**
+     * This method get athlete details by athlete ID
+     * @param athleteId : UUID
+     * @return : AthleteDetailsResponse
+     */
     public AthleteDetailsResponse getAthleteDetailsByAthleteId(UUID athleteId) {
 
         Athlete athlete = athleteRepository.findByAthleteId(athleteId)
@@ -160,13 +165,21 @@ public class AthleteService {
                 .build();
     }
 
-    public void updateAthlete(CreateAthleteRequest request, UUID athleteId) {
-        Athlete athlete = athleteRepository.findByAthleteId(athleteId)
+    /**
+     * This method updates the athlete
+     * @param request : CreateAthleteRequest
+     * @param authHeader : String
+     * @return : AuthenticationResponse
+     */
+    public AuthenticationResponse updateAthlete(CreateAthleteRequest request, String authHeader) {
+
+        String email = jwtService.extractUserName(authHeader.substring(7));
+        Athlete athlete = athleteRepository.findByEmail(email)
                 .orElseThrow(() -> new AthleteNotFoundException("Athlete with id : [%s] not found"
-                        .formatted(athleteId)));
+                        .formatted(email)));
         User user = userRepository.findUserByUserId(athlete.getUserId())
-                .orElseThrow(() -> new UsernameNotFoundException("User with id : [%s] Not Found".formatted(athlete
-                        .getUserId())));
+                .orElseThrow(() -> new UsernameNotFoundException("User with id : [%s] Not Found"
+                        .formatted(athlete.getUserId())));
 
         athlete.setFirstname(request.getFirstname());
         athlete.setLastname(request.getLastname());
@@ -179,7 +192,9 @@ public class AthleteService {
 
         athleteRepository.save(athlete);
 
+        user.setPassword(request.getPassword());
         user.setEmail(request.getEmail());
-        authService.update(user);
+
+        return authService.update(user);
     }
 }

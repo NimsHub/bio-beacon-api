@@ -4,6 +4,7 @@ import com.nimshub.biobeacon.auth.AuthService;
 import com.nimshub.biobeacon.auth.RegisterRequest;
 import com.nimshub.biobeacon.auth.RegistrationResponse;
 import com.nimshub.biobeacon.coach.dto.CoachDetailsResponse;
+import com.nimshub.biobeacon.coach.dto.CoachResponse;
 import com.nimshub.biobeacon.coach.dto.CreateCoachRequest;
 import com.nimshub.biobeacon.config.JwtService;
 import com.nimshub.biobeacon.user.Gender;
@@ -116,7 +117,7 @@ class CoachServiceTest {
         when(coachRepository.findAll()).thenReturn(Collections.singletonList(coach));
 
         // when
-        List<CoachDetailsResponse> coaches = coachService.getCoaches();
+        List<CoachResponse> coaches = coachService.getCoaches();
 
         // then
         assertThat(coaches).hasSize(1);
@@ -124,10 +125,6 @@ class CoachServiceTest {
         assertThat(coaches.get(0).getFirstname()).isEqualTo(coach.getFirstname());
         assertThat(coaches.get(0).getLastname()).isEqualTo(coach.getLastname());
         assertThat(coaches.get(0).getEmail()).isEqualTo(coach.getEmail());
-        assertThat(coaches.get(0).getGender()).isEqualTo(coach.getGender());
-        assertThat(coaches.get(0).getDateOfBirth()).isEqualTo(coach.getDateOfBirth());
-        assertThat(coaches.get(0).getMobile()).isEqualTo(coach.getMobile());
-        assertThat(coaches.get(0).getAddress()).isEqualTo(coach.getAddress());
     }
 
     @Test

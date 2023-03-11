@@ -2,6 +2,7 @@ package com.nimshub.biobeacon.coach;
 
 import com.nimshub.biobeacon.auth.AuthenticationResponse;
 import com.nimshub.biobeacon.coach.dto.CoachDetailsResponse;
+import com.nimshub.biobeacon.coach.dto.CoachResponse;
 import com.nimshub.biobeacon.coach.dto.CreateCoachRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,8 +28,8 @@ public class CoachController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<CoachDetailsResponse>> getCoaches() {
-        List<CoachDetailsResponse> coaches = coachService.getCoaches();
+    public ResponseEntity<List<CoachResponse>> getCoaches() {
+        List<CoachResponse> coaches = coachService.getCoaches();
         logger.info("list of all coaches has been retrieved");
         return new ResponseEntity<>(coaches, HttpStatus.OK);
     }
@@ -37,6 +38,14 @@ public class CoachController {
     public ResponseEntity<CoachDetailsResponse> getCoach(@RequestHeader("Authorization") String authHeader) {
         CoachDetailsResponse response = coachService.getCoach(authHeader);
         logger.info("coach details retrieved : {}", response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/update-coach")
+    public ResponseEntity<AuthenticationResponse> updateCoach(
+            @RequestBody CreateCoachRequest request, @RequestHeader("Authorization") String authHeader) {
+        AuthenticationResponse response = coachService.updateCoach(request, authHeader);
+        logger.info("successfully updated coach : {}", request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
