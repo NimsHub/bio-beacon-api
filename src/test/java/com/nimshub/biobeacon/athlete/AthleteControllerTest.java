@@ -1,6 +1,7 @@
 package com.nimshub.biobeacon.athlete;
 
 import com.nimshub.biobeacon.athlete.dto.AthleteDetailsResponse;
+import com.nimshub.biobeacon.athlete.dto.AthleteResponse;
 import com.nimshub.biobeacon.athlete.dto.CreateAthleteRequest;
 import com.nimshub.biobeacon.auth.AuthenticationResponse;
 import com.nimshub.biobeacon.user.Gender;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.when;
 
 class AthleteControllerTest {
     private static AthleteDetailsResponse athleteDetailsResponse;
+    private static AthleteResponse athleteResponse;
     @Mock
     private AthleteService athleteService;
     @InjectMocks
@@ -44,6 +46,15 @@ class AthleteControllerTest {
                 .weight(80.0)
                 .mobile("1234567890")
                 .address("123.Main St")
+                .occupation(null)
+                .build();
+
+        athleteResponse = AthleteResponse.builder()
+                .athleteId(UUID.randomUUID())
+                .firstname("John")
+                .lastname("Doe")
+                .email("john.doe@example.com")
+                .gender(Gender.MALE)
                 .occupation(null)
                 .build();
     }
@@ -88,28 +99,28 @@ class AthleteControllerTest {
     @Test
     void testGetAthletes() {
         // given
-        when(athleteService.getAthletes()).thenReturn(Collections.singletonList(athleteDetailsResponse));
+        when(athleteService.getAthletes()).thenReturn(Collections.singletonList(athleteResponse));
 
         // when
-        ResponseEntity<List<AthleteDetailsResponse>> response = athleteController.getAthletes();
+        ResponseEntity<List<AthleteResponse>> response = athleteController.getAthletes();
 
         // then
         verify(athleteService).getAthletes();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(Collections.singletonList(athleteDetailsResponse));
+        assertThat(response.getBody()).isEqualTo(Collections.singletonList(athleteResponse));
     }
 
     @Test
-    void testGetAthlete() {
+    void testGetAthleteByToken() {
         // given
 
-        when(athleteService.getAthlete(any())).thenReturn(athleteDetailsResponse);
+        when(athleteService.getAthleteByToken(any())).thenReturn(athleteDetailsResponse);
 
         // when
-        ResponseEntity<AthleteDetailsResponse> response = athleteController.getAthlete("Bearer token");
+        ResponseEntity<AthleteDetailsResponse> response = athleteController.getAthleteByToken("Bearer token");
 
         // then
-        verify(athleteService).getAthlete("Bearer token");
+        verify(athleteService).getAthleteByToken("Bearer token");
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(athleteDetailsResponse);
     }
@@ -118,14 +129,14 @@ class AthleteControllerTest {
     void testGetAthletesByCoachId() {
         // given
 
-        when(athleteService.getAthletesByCoachId(any())).thenReturn(Collections.singletonList(athleteDetailsResponse));
+        when(athleteService.getAthletesByCoachId(any())).thenReturn(Collections.singletonList(athleteResponse));
 
         // when
-        ResponseEntity<List<AthleteDetailsResponse>> response = athleteController.getAthletesByCoachId(UUID.randomUUID());
+        ResponseEntity<List<AthleteResponse>> response = athleteController.getAthletesByCoachId(UUID.randomUUID());
 
         // then
         verify(athleteService).getAthletesByCoachId(any());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(Collections.singletonList(athleteDetailsResponse));
+        assertThat(response.getBody()).isEqualTo(Collections.singletonList(athleteResponse));
     }
 }
