@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class AthleteDetailsResponse {
-    private UUID id;
+    private UUID athleteId;
     private UUID coachId;
     private String firstname;
     private String lastname;

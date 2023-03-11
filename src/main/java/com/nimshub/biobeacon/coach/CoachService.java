@@ -41,7 +41,7 @@ public class CoachService {
         var response = authService.register(registerRequest);
 
         Coach coach = Coach.builder()
-                .id(UUID.randomUUID())
+                .coachId(UUID.randomUUID())
                 .userId(response.getId())
                 .email(request.getEmail())
                 .firstname(request.getFirstname())
@@ -67,7 +67,7 @@ public class CoachService {
 
         return coaches.stream()
                 .map(coach -> CoachDetailsResponse.builder()
-                        .id(coach.getId())
+                        .id(coach.getCoachId())
                         .firstname(coach.getFirstname())
                         .lastname(coach.getLastname())
                         .email(coach.getEmail())
@@ -84,12 +84,14 @@ public class CoachService {
      */
     public CoachDetailsResponse getCoach(String authHeader) {
 
-        String token = authHeader.substring(7);
-        Coach coach = coachRepository.findByEmail(jwtService.extractUserName(token))
-                .orElseThrow(() -> new UsernameNotFoundException("User name not found"));
+        String email = jwtService.extractUserName(authHeader.substring(7));
+
+        Coach coach = coachRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User with email : [%s] not found".formatted(email)));
 
         return CoachDetailsResponse.builder()
-                .id(coach.getId())
+                .id(coach.getCoachId())
                 .firstname(coach.getFirstname())
                 .lastname(coach.getLastname())
                 .email(coach.getEmail())

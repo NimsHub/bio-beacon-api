@@ -24,8 +24,8 @@ public class Athlete {
     @Id
     @SequenceGenerator(name = "ATHLETE_SEQ", sequenceName = "ATHLETE_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ATHLETE_SEQ")
-    private Integer key;
-    private UUID id;
+    private Integer id;
+    private UUID athleteId;
     private UUID userId;
     private UUID coachId;
     private String firstname;

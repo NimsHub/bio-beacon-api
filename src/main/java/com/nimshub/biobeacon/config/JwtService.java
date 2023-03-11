@@ -28,8 +28,6 @@ public class JwtService {
         return extractClaim(token, Claims::getSubject);
     }
 
-    ;
-
     /**
      * @param token          : String
      * @param claimsResolver : Function

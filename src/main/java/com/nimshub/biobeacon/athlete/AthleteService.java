@@ -5,8 +5,11 @@ import com.nimshub.biobeacon.athlete.dto.CreateAthleteRequest;
 import com.nimshub.biobeacon.auth.AuthService;
 import com.nimshub.biobeacon.auth.AuthenticationResponse;
 import com.nimshub.biobeacon.auth.RegisterRequest;
+import com.nimshub.biobeacon.coach.Coach;
+import com.nimshub.biobeacon.coach.CoachRepository;
 import com.nimshub.biobeacon.config.JwtService;
 import com.nimshub.biobeacon.exceptions.AthleteNotFoundException;
+import com.nimshub.biobeacon.exceptions.CoachNotFoundException;
 import com.nimshub.biobeacon.user.Role;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AthleteService {
     private final AthleteRepository athleteRepository;
+    private final CoachRepository coachRepository;
     private final AuthService authService;
     private final JwtService jwtService;
 
@@ -40,7 +44,7 @@ public class AthleteService {
         var response = authService.register(registerRequest);
 
         Athlete athlete = Athlete.builder()
-                .id(UUID.randomUUID())
+                .athleteId(UUID.randomUUID())
                 .userId(response.getId())
                 .coachId(request.getCoachId())
                 .email(request.getEmail())
@@ -72,7 +76,7 @@ public class AthleteService {
 
         return athletes.stream()
                 .map(athlete -> AthleteDetailsResponse.builder()
-                        .id(athlete.getId())
+                        .athleteId(athlete.getAthleteId())
                         .coachId(athlete.getCoachId())
                         .firstname(athlete.getFirstname())
                         .lastname(athlete.getLastname())
@@ -94,12 +98,14 @@ public class AthleteService {
      */
     public AthleteDetailsResponse getAthlete(String authHeader) {
 
-        String token = authHeader.substring(7);
-        Athlete athlete = athleteRepository.findByEmail(jwtService.extractUserName(token))
-                .orElseThrow(() -> new UsernameNotFoundException("User name not found"));
+        String email = jwtService.extractUserName(authHeader.substring(7));
+
+        Athlete athlete = athleteRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new UsernameNotFoundException("User with email : [%s] not found".formatted(email)));
 
         return AthleteDetailsResponse.builder()
-                .id(athlete.getId())
+                .athleteId(athlete.getAthleteId())
                 .coachId(athlete.getCoachId())
                 .firstname(athlete.getFirstname())
                 .lastname(athlete.getLastname())
@@ -121,16 +127,19 @@ public class AthleteService {
      */
     public List<AthleteDetailsResponse> getAthletesByCoachId(UUID id) {
 
+        Coach coach = coachRepository.findByCoachId(id)
+                .orElseThrow(() -> new CoachNotFoundException("Coach with id : [%s] not found".formatted(id)));
+
         List<Athlete> athletes = athleteRepository.findByCoachId(id)
-                .orElseThrow(() -> new AthleteNotFoundException("Athletes not found for Coach : " + id));
+                .orElseThrow(() -> new AthleteNotFoundException("Athletes not found for Coach : [%s]".formatted(id)));
 
         return athletes.stream()
                 .map(athlete -> AthleteDetailsResponse.builder()
-                        .id(athlete.getId())
+                        .athleteId(athlete.getAthleteId())
                         .firstname(athlete.getFirstname())
                         .lastname(athlete.getLastname())
                         .email(athlete.getEmail())
-                        .coachId(athlete.getCoachId())
+                        .coachId(coach.getCoachId())
                         .gender(athlete.getGender())
                         .weight(athlete.getWeight())
                         .height(athlete.getHeight())
