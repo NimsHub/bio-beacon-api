@@ -1,6 +1,7 @@
 package com.nimshub.biobeacon.config;
 
 import com.nimshub.biobeacon.device.DeviceRepository;
+import com.nimshub.biobeacon.exceptions.FilterChainExceptionHandler;
 import com.nimshub.biobeacon.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class AppConfig {
     private final UserRepository userRepository;
     private final DeviceRepository deviceRepository;
+    private final FilterChainExceptionHandler filterChainExceptionHandler;
 
     @Bean
     public UserDetailsService userDetailsService() {
@@ -28,9 +30,9 @@ public class AppConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<ApiKeyFilter> ApiKeyFilter() {
+    public FilterRegistrationBean<ApiKeyFilter> apiKeyFilter() {
         FilterRegistrationBean<ApiKeyFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(new ApiKeyFilter(deviceRepository));
+        registration.setFilter(new ApiKeyFilter(deviceRepository, filterChainExceptionHandler));
         registration.addUrlPatterns("/api/v1/session/update-session");
         return registration;
     }
