@@ -24,14 +24,20 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     Logger logger = LoggerFactory.getLogger(AuthService.class);
 
+    /**
+     * This method registers users in the system
+     *
+     * @param request : RegisterRequest
+     * @return RegistrationResponse
+     */
     public RegistrationResponse register(RegisterRequest request) {
 
         if (userRepository.existsByEmail(request.getEmail())) {
-            throw new UserAlreadyExistsException("User with email " + request.getEmail() + " already exists");
+            throw new UserAlreadyExistsException("User with email : [%s]  already exists".formatted(request.getEmail()));
         }
 
         var user = User.builder()
-                .id(UUID.randomUUID())
+                .userId(UUID.randomUUID())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(request.getRole())
@@ -41,20 +47,27 @@ public class AuthService {
         var jwtToken = jwtService.generateToken(user);
         logger.info("User registration success");
         return RegistrationResponse.builder()
-                .id(registeredUser.getId())
+                .id(registeredUser.getUserId())
                 .token(jwtToken)
                 .build();
     }
 
+    /**
+     * This method authenticates users
+     *
+     * @param request : AuthenticationRequest
+     * @return AuthenticationResponse
+     */
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "User with E-mail : [%s]  does not exist".formatted(request.getEmail())));
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
                         request.getPassword()
                 )
         );
-        var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found"));
         var jwtToken = jwtService.generateToken(user);
         logger.info("User authentication success");
 
