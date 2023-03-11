@@ -6,6 +6,7 @@ import com.nimshub.biobeacon.athlete.dto.CreateAthleteRequest;
 import com.nimshub.biobeacon.auth.AuthService;
 import com.nimshub.biobeacon.auth.AuthenticationResponse;
 import com.nimshub.biobeacon.auth.RegisterRequest;
+import com.nimshub.biobeacon.coach.Coach;
 import com.nimshub.biobeacon.coach.CoachRepository;
 import com.nimshub.biobeacon.config.JwtService;
 import com.nimshub.biobeacon.exceptions.AthleteNotFoundException;
@@ -119,16 +120,18 @@ public class AthleteService {
     /**
      * This method retrieves athletes of specific Coach
      *
-     * @param id : UUID
+     * @param authHeader : String
      * @return : List<AthleteDetailsResponse>
      */
-    public List<AthleteResponse> getAthletesByCoachId(UUID id) {
+    public List<AthleteResponse> getAthletesByCoach(String authHeader) {
+        String email = jwtService.extractUserName(authHeader.substring(7));
+        Coach coach = coachRepository.findByEmail(email)
+                .orElseThrow(() -> new CoachNotFoundException("Coach with id : [%s] not found"
+                        .formatted(email)));
 
-        coachRepository.findByCoachId(id)
-                .orElseThrow(() -> new CoachNotFoundException("Coach with id : [%s] not found".formatted(id)));
-
-        List<Athlete> athletes = athleteRepository.findByCoachId(id)
-                .orElseThrow(() -> new AthleteNotFoundException("Athletes not found for Coach : [%s]".formatted(id)));
+        List<Athlete> athletes = athleteRepository.findByCoachId(coach.getCoachId())
+                .orElseThrow(() -> new AthleteNotFoundException("Athletes not found for Coach : [%s]"
+                        .formatted(coach.getCoachId())));
 
         return athletes.stream()
                 .map(athlete -> AthleteResponse.builder()

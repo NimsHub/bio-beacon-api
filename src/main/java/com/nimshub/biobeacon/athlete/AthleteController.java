@@ -43,11 +43,11 @@ public class AthleteController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/coach/{id}")
+    @GetMapping("/coach")
     @PreAuthorize("hasAuthority('COACH')")
-    public ResponseEntity<List<AthleteResponse>> getAthletesByCoachId(@PathVariable UUID id) {
-        List<AthleteResponse> athletes = athleteService.getAthletesByCoachId(id);
-        logger.info("athletes of coach : {} retrieved", id);
+    public ResponseEntity<List<AthleteResponse>> getAthletesByCoach(@RequestHeader("Authorization") String authHeader) {
+        List<AthleteResponse> athletes = athleteService.getAthletesByCoach(authHeader);
+        logger.info("athletes of coach retrieved");
         return new ResponseEntity<>(athletes, HttpStatus.OK);
     }
 
