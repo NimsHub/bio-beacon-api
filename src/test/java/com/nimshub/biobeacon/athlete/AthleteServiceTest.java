@@ -1,6 +1,7 @@
 package com.nimshub.biobeacon.athlete;
 
 import com.nimshub.biobeacon.athlete.dto.AthleteDetailsResponse;
+import com.nimshub.biobeacon.athlete.dto.AthleteResponse;
 import com.nimshub.biobeacon.athlete.dto.CreateAthleteRequest;
 import com.nimshub.biobeacon.auth.AuthService;
 import com.nimshub.biobeacon.auth.AuthenticationResponse;
@@ -146,20 +147,14 @@ class AthleteServiceTest {
         List<Athlete> athletes = Arrays.asList(athlete1, athlete2);
         when(athleteRepository.findAll()).thenReturn(athletes);
 
-        List<AthleteDetailsResponse> athleteDetails = athleteService.getAthletes();
+        List<AthleteResponse> athleteResponses = athleteService.getAthletes();
 
-        assertEquals(2, athleteDetails.size());
-        assertEquals(athlete1.getAthleteId(), athleteDetails.get(0).getAthleteId());
-        assertEquals(athlete1.getCoachId(), athleteDetails.get(0).getCoachId());
-        assertEquals(athlete1.getFirstname(), athleteDetails.get(0).getFirstname());
-        assertEquals(athlete1.getLastname(), athleteDetails.get(0).getLastname());
-        assertEquals(athlete1.getEmail(), athleteDetails.get(0).getEmail());
-        assertEquals(athlete1.getGender(), athleteDetails.get(0).getGender());
-        assertEquals(athlete1.getDateOfBirth(), athleteDetails.get(0).getDateOfBirth());
-        assertEquals(athlete1.getWeight(), athleteDetails.get(0).getWeight());
-        assertEquals(athlete1.getHeight(), athleteDetails.get(0).getHeight());
-        assertEquals(athlete1.getMobile(), athleteDetails.get(0).getMobile());
-        assertEquals(athlete1.getAddress(), athleteDetails.get(0).getAddress());
+        assertEquals(2, athleteResponses.size());
+        assertEquals(athlete1.getAthleteId(), athleteResponses.get(0).getAthleteId());
+        assertEquals(athlete1.getFirstname(), athleteResponses.get(0).getFirstname());
+        assertEquals(athlete1.getLastname(), athleteResponses.get(0).getLastname());
+        assertEquals(athlete1.getEmail(), athleteResponses.get(0).getEmail());
+        assertEquals(athlete1.getGender(), athleteResponses.get(0).getGender());
 
     }
 
@@ -186,7 +181,7 @@ class AthleteServiceTest {
 
         when(athleteRepository.findByEmail(email)).thenReturn(Optional.of(athlete));
 
-        AthleteDetailsResponse response = athleteService.getAthlete("Bearer " + token);
+        AthleteDetailsResponse response = athleteService.getAthleteByToken("Bearer " + token);
         System.out.println(response.toString());
         assertEquals(athlete.getAthleteId(), response.getAthleteId());
         assertEquals(athlete.getCoachId(), response.getCoachId());
@@ -211,27 +206,21 @@ class AthleteServiceTest {
         when(coachRepository.findByCoachId(coachId)).thenReturn(Optional.ofNullable(coach));
 
         // When
-        List<AthleteDetailsResponse> athleteDetailsResponses = athleteService.getAthletesByCoachId(coachId);
+        List<AthleteResponse> athleteResponses = athleteService.getAthletesByCoachId(coachId);
 
         // Then
-        List<AthleteDetailsResponse> expectedAthleteDetailsResponses = athletes
+        List<AthleteResponse> expectedAthleteResponses = athletes
                 .stream()
-                .map(athlete -> AthleteDetailsResponse.builder()
+                .map(athlete -> AthleteResponse.builder()
                         .athleteId(athlete.getAthleteId())
-                        .coachId(athlete.getCoachId())
                         .firstname(athlete.getFirstname())
                         .lastname(athlete.getLastname())
                         .email(athlete.getEmail())
                         .gender(athlete.getGender())
-                        .dateOfBirth(athlete.getDateOfBirth())
-                        .weight(athlete.getWeight())
-                        .height(athlete.getHeight())
-                        .mobile(athlete.getMobile())
-                        .address(athlete.getAddress())
                         .build()).toList();
 
-        assertThat(athleteDetailsResponses).hasSize(2);
-        assertThat(athleteDetailsResponses).usingRecursiveComparison().isEqualTo(expectedAthleteDetailsResponses);
+        assertThat(athleteResponses).hasSize(2);
+        assertThat(athleteResponses).usingRecursiveComparison().isEqualTo(expectedAthleteResponses);
     }
 
     @Test
