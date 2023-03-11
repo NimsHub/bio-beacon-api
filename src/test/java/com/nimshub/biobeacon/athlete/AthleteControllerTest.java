@@ -129,13 +129,13 @@ class AthleteControllerTest {
     void testGetAthletesByCoachId() {
         // given
 
-        when(athleteService.getAthletesByCoachId(any())).thenReturn(Collections.singletonList(athleteResponse));
+        when(athleteService.getAthletesByCoach(any())).thenReturn(Collections.singletonList(athleteResponse));
 
         // when
-        ResponseEntity<List<AthleteResponse>> response = athleteController.getAthletesByCoachId(UUID.randomUUID());
+        ResponseEntity<List<AthleteResponse>> response = athleteController.getAthletesByCoach("token......");
 
         // then
-        verify(athleteService).getAthletesByCoachId(any());
+        verify(athleteService).getAthletesByCoach(any());
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isEqualTo(Collections.singletonList(athleteResponse));
     }

@@ -29,6 +29,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -201,12 +202,12 @@ class AthleteServiceTest {
 
         // Given
         List<Athlete> athletes = Arrays.asList(athlete1, athlete2);
-        when(athleteRepository.findByCoachId(coachId)).thenReturn(Optional.of(athletes));
+        when(athleteRepository.findByCoachId(any())).thenReturn(Optional.of(athletes));
 
-        when(coachRepository.findByCoachId(coachId)).thenReturn(Optional.ofNullable(coach));
+        when(coachRepository.findByEmail(any())).thenReturn(Optional.ofNullable(coach));
 
         // When
-        List<AthleteResponse> athleteResponses = athleteService.getAthletesByCoachId(coachId);
+        List<AthleteResponse> athleteResponses = athleteService.getAthletesByCoach("token........");
 
         // Then
         List<AthleteResponse> expectedAthleteResponses = athletes
@@ -226,13 +227,12 @@ class AthleteServiceTest {
     @Test
     void testGetAthletesByCoachIdThrowsException() {
         // Given
-        UUID coachId = UUID.randomUUID();
-        when(athleteRepository.findByCoachId(coachId)).thenReturn(Optional.empty());
-        when(coachRepository.findByCoachId(coachId)).thenReturn(Optional.ofNullable(coach));
+        when(athleteRepository.findByCoachId(any())).thenReturn(Optional.empty());
+        when(coachRepository.findByEmail(any())).thenReturn(Optional.ofNullable(coach));
 
         // When/Then
         AthleteNotFoundException ex = assertThrows(AthleteNotFoundException.class, () ->
-                athleteService.getAthletesByCoachId(coachId)
+                athleteService.getAthletesByCoach("token........")
         );
         assertThat(ex.getMessage()).isEqualTo("Athletes not found for Coach : [%s]".formatted(coachId));
     }
