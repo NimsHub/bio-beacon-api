@@ -25,17 +25,15 @@ public class Session {
     @Id
     @SequenceGenerator(name = "SESSION_SEQ", sequenceName = "SESSION_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SESSION_SEQ")
-    private Integer key;
-    private UUID id;
+    private Integer id;
+    @NotNull
+    private UUID sessionId;
     @NotNull(message = "User ID cannot be null for a session")
     private UUID athleteId;
     @NotNull(message = "Device ID cannot be null for a session")
     private Long deviceId;
     @Column(columnDefinition = "boolean default false")
     private boolean isComplete;
-    private String heartRate;
-    private String bloodPressure;
-    private String respirationRate;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Long sessionDuration;

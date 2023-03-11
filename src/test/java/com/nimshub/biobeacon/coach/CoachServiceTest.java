@@ -4,6 +4,7 @@ import com.nimshub.biobeacon.auth.AuthService;
 import com.nimshub.biobeacon.auth.RegisterRequest;
 import com.nimshub.biobeacon.auth.RegistrationResponse;
 import com.nimshub.biobeacon.coach.dto.CoachDetailsResponse;
+import com.nimshub.biobeacon.coach.dto.CoachResponse;
 import com.nimshub.biobeacon.coach.dto.CreateCoachRequest;
 import com.nimshub.biobeacon.config.JwtService;
 import com.nimshub.biobeacon.user.Gender;
@@ -30,23 +31,20 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class CoachServiceTest {
 
+    private static Coach coach;
     @Mock
     private CoachRepository coachRepository;
-
     @Mock
     private AuthService authService;
-
     @Mock
     private JwtService jwtService;
-
     @InjectMocks
     private CoachService coachService;
-    private static Coach coach;
 
     @BeforeAll()
     static void setUp() {
         coach = Coach.builder()
-                .id(UUID.randomUUID())
+                .coachId(UUID.randomUUID())
                 .firstname("John")
                 .lastname("Doe")
                 .email("john.doe@example.com")
@@ -101,7 +99,7 @@ class CoachServiceTest {
         verify(coachRepository).save(coachCaptor.capture());
         Coach savedCoach = coachCaptor.getValue();
 
-        assertThat(savedCoach.getId()).isNotNull();
+        assertThat(savedCoach.getCoachId()).isNotNull();
         assertThat(savedCoach.getUserId()).isEqualTo(registrationResponse.getId());
         assertThat(savedCoach.getEmail()).isEqualTo(email);
         assertThat(savedCoach.getFirstname()).isEqualTo(firstname);
@@ -119,18 +117,14 @@ class CoachServiceTest {
         when(coachRepository.findAll()).thenReturn(Collections.singletonList(coach));
 
         // when
-        List<CoachDetailsResponse> coaches = coachService.getCoaches();
+        List<CoachResponse> coaches = coachService.getCoaches();
 
         // then
         assertThat(coaches).hasSize(1);
-        assertThat(coaches.get(0).getId()).isEqualTo(coach.getId());
+        assertThat(coaches.get(0).getId()).isEqualTo(coach.getCoachId());
         assertThat(coaches.get(0).getFirstname()).isEqualTo(coach.getFirstname());
         assertThat(coaches.get(0).getLastname()).isEqualTo(coach.getLastname());
         assertThat(coaches.get(0).getEmail()).isEqualTo(coach.getEmail());
-        assertThat(coaches.get(0).getGender()).isEqualTo(coach.getGender());
-        assertThat(coaches.get(0).getDateOfBirth()).isEqualTo(coach.getDateOfBirth());
-        assertThat(coaches.get(0).getMobile()).isEqualTo(coach.getMobile());
-        assertThat(coaches.get(0).getAddress()).isEqualTo(coach.getAddress());
     }
 
     @Test
@@ -145,7 +139,7 @@ class CoachServiceTest {
 
         CoachDetailsResponse response = coachService.getCoach("Bearer " + token);
         System.out.println(response.toString());
-        assertEquals(coach.getId(), response.getId());
+        assertEquals(coach.getCoachId(), response.getId());
         assertEquals(coach.getFirstname(), response.getFirstname());
         assertEquals(coach.getLastname(), response.getLastname());
         assertEquals(coach.getEmail(), response.getEmail());

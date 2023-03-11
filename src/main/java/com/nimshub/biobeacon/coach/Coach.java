@@ -26,8 +26,8 @@ public class Coach {
     @Id
     @SequenceGenerator(name = "COACH_SEQ", sequenceName = "COACH_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "COACH_SEQ")
-    private Integer key;
-    private UUID id;
+    private Integer id;
+    private UUID coachId;
     @NotNull
     private UUID userId;
     @Email

@@ -28,8 +28,8 @@ public class User implements UserDetails {
     @Id
     @SequenceGenerator(name = "USER_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
-    private Integer key;
-    private UUID id;
+    private Integer id;
+    private UUID userId;
     @Email
     @NotBlank
     private String email;

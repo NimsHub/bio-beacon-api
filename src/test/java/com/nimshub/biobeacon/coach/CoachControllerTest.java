@@ -2,6 +2,7 @@ package com.nimshub.biobeacon.coach;
 
 import com.nimshub.biobeacon.auth.AuthenticationResponse;
 import com.nimshub.biobeacon.coach.dto.CoachDetailsResponse;
+import com.nimshub.biobeacon.coach.dto.CoachResponse;
 import com.nimshub.biobeacon.coach.dto.CreateCoachRequest;
 import com.nimshub.biobeacon.user.Gender;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,17 +25,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CoachControllerTest {
+    private static CoachResponse coachResponse;
+    private static CoachDetailsResponse coachDetailsResponse;
     @Mock
     private CoachService coachService;
     @InjectMocks
     private CoachController coachController;
-
-    @BeforeEach
-    void setUp() {
-        MockitoAnnotations.openMocks(this);
-    }
-
-    private static CoachDetailsResponse coachDetailsResponse;
 
     @BeforeAll
     static void setUpData() {
@@ -48,6 +44,18 @@ class CoachControllerTest {
                 .mobile("1234567890")
                 .address("123.Main St")
                 .build();
+
+        coachResponse = CoachResponse.builder()
+                .id(UUID.randomUUID())
+                .firstname("John")
+                .lastname("Doe")
+                .email("john.doe@example.com")
+                .build();
+    }
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -80,15 +88,15 @@ class CoachControllerTest {
     @Test
     void testGetCoaches() {
         // given
-        when(coachService.getCoaches()).thenReturn(Collections.singletonList(coachDetailsResponse));
+        when(coachService.getCoaches()).thenReturn(Collections.singletonList(coachResponse));
 
         // when
-        ResponseEntity<List<CoachDetailsResponse>> response = coachController.getCoaches();
+        ResponseEntity<List<CoachResponse>> response = coachController.getCoaches();
 
         // then
         verify(coachService).getCoaches();
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(response.getBody()).isEqualTo(Collections.singletonList(coachDetailsResponse));
+        assertThat(response.getBody()).isEqualTo(Collections.singletonList(coachResponse));
     }
 
     @Test

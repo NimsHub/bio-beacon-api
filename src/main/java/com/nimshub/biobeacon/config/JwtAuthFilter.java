@@ -1,5 +1,6 @@
 package com.nimshub.biobeacon.config;
 
+import com.nimshub.biobeacon.exceptions.FilterChainExceptionHandler;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import java.io.IOException;
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final FilterChainExceptionHandler filterChainExceptionHandler;
     Logger logger = LoggerFactory.getLogger(JwtAuthFilter.class);
 
     @Override
@@ -33,7 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         final String authHeader = request.getHeader("Authorization");
         final String token;
-        final String userEmail;
+        String userEmail;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -41,21 +43,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         token = authHeader.substring(7);
-        userEmail = jwtService.extractUserName(token);
+
+        try {
+            userEmail = jwtService.extractUserName(token);
+        } catch (Exception e) {
+            filterChainExceptionHandler.handelException(e, response, request);
+            return;
+        }
 
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            if (jwtService.isTokenValid(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities()
-                );
-                authToken.setDetails(
-                        new WebAuthenticationDetailsSource().buildDetails(request)
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                logger.info("Updated security context");
-            }
+            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                    userDetails, null, userDetails.getAuthorities()
+            );
+            authToken.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request)
+            );
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+            logger.info("Updated security context");
         }
         filterChain.doFilter(request, response);
     }

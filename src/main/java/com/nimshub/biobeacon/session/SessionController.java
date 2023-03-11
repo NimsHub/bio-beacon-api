@@ -1,6 +1,8 @@
 package com.nimshub.biobeacon.session;
 
 import com.nimshub.biobeacon.session.dto.CreateSessionRequest;
+import com.nimshub.biobeacon.session.dto.SessionDetailsResponse;
+import com.nimshub.biobeacon.session.dto.SessionResponse;
 import com.nimshub.biobeacon.session.dto.UpdateSessionRequest;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -14,31 +16,38 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/session")
+@RequestMapping("/api/v1/sessions")
 @RequiredArgsConstructor
 public class SessionController {
     private final SessionService sessionService;
     Logger logger = LoggerFactory.getLogger(SessionController.class);
 
     @PostMapping("/create-session")
-    public ResponseEntity<?> createSession(@RequestBody CreateSessionRequest request) {
-        Session session = sessionService.createSession(request);
+    @PreAuthorize("hasAuthority('ATHLETE')")
+    public ResponseEntity<String> createSession(@RequestBody CreateSessionRequest request) {
+        sessionService.createSession(request);
         logger.info("new session has been created from : {}", request);
-        return new ResponseEntity<>(session, HttpStatus.CREATED);
+        return new ResponseEntity<>("new session has been created", HttpStatus.CREATED);
+    }
+
+    @GetMapping("/athlete/{id}")
+    public ResponseEntity<List<SessionResponse>> getSessionsByAthleteId(@PathVariable("id") UUID id) {
+        List<SessionResponse> sessions = sessionService.getSessionsByAthleteId(id);
+        logger.info("getting sessions of the user : {}", id);
+        return new ResponseEntity<>(sessions, HttpStatus.OK);
     }
 
     @PostMapping("/update-session")
     public ResponseEntity<String> updateSession(@RequestBody UpdateSessionRequest request) {
-        sessionService.updateSession(request);
+        sessionService.updateSessionDetails(request);
         logger.info("session from {} has been updated", request);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("session details has been updated", HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority('ATHLETE')")
-    public ResponseEntity<?> getSessionsByAthleteId(@PathVariable("id") UUID id) {
-        List<Session> sessions = sessionService.getSessionsByAthleteId(id);
-        logger.info("getting sessions of the user : {}", id);
-        return new ResponseEntity<>(sessions, HttpStatus.OK);
+    @GetMapping("/session/{id}")
+    public ResponseEntity<SessionDetailsResponse> getSessionDetailsBySessionId(@PathVariable("id") UUID id) {
+        SessionDetailsResponse sessionDetailsResponse = sessionService.getSessionDetails(id);
+        logger.info("getting session details of the session : {}", id);
+        return new ResponseEntity<>(sessionDetailsResponse, HttpStatus.OK);
     }
 }

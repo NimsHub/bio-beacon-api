@@ -30,7 +30,7 @@ class AthleteRepositoryTest {
     void shouldFindByEmail() {
         String email = "test@test.com";
         Athlete athlete = Athlete.builder()
-                .id(UUID.randomUUID())
+                .athleteId(UUID.randomUUID())
                 .email(email)
                 .build();
 
@@ -44,12 +44,12 @@ class AthleteRepositoryTest {
     void shouldFindByCoachId() {
         UUID coachId = UUID.randomUUID();
         Athlete athlete1 = Athlete.builder()
-                .id(UUID.randomUUID())
+                .athleteId(UUID.randomUUID())
                 .coachId(coachId)
                 .build();
 
         Athlete athlete2 = Athlete.builder()
-                .id(UUID.randomUUID())
+                .athleteId(UUID.randomUUID())
                 .coachId(coachId)
                 .build();
 

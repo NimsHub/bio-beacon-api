@@ -11,4 +11,6 @@ public interface CoachRepository extends JpaRepository<Coach, Integer> {
     Optional<Coach> findByEmail(String email);
 
     Optional<Coach> findByUserId(UUID id);
+
+    Optional<Coach> findByCoachId(UUID id);
 }

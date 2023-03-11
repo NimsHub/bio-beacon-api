@@ -4,23 +4,16 @@ import com.nimshub.biobeacon.user.Gender;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
 @Builder
-public class AthleteDetailsResponse {
+public class AthleteResponse {
     private UUID athleteId;
-    private UUID coachId;
     private String firstname;
     private String lastname;
     private String email;
     private Gender gender;
-    private LocalDate dateOfBirth;
-    private Double height;
-    private Double weight;
-    private String mobile;
-    private String address;
     private String occupation;
 }
 

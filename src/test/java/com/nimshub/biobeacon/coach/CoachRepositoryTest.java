@@ -25,7 +25,7 @@ class CoachRepositoryTest {
         String email = "john.doe@example.com";
         UUID id = UUID.randomUUID();
         Coach coach = Coach.builder()
-                .id(id)
+                .coachId(id)
                 .userId(UUID.randomUUID())
                 .email(email)
                 .build();
@@ -36,7 +36,7 @@ class CoachRepositoryTest {
 
         // then
         assertThat(result).isPresent();
-        assertThat(result.get().getId()).isEqualTo(id);
+        assertThat(result.get().getCoachId()).isEqualTo(id);
         assertThat(result.get().getEmail()).isEqualTo(email);
     }
 
@@ -45,7 +45,7 @@ class CoachRepositoryTest {
         // given
         UUID id = UUID.randomUUID();
         Coach coach = Coach.builder()
-                .id(UUID.randomUUID())
+                .coachId(UUID.randomUUID())
                 .userId(id)
                 .email("john.doe@example.com")
                 .build();
@@ -56,7 +56,7 @@ class CoachRepositoryTest {
 
         // then
         assertThat(result).isPresent();
-        assertThat(result.get().getId()).isEqualTo(coach.getId());
+        assertThat(result.get().getCoachId()).isEqualTo(coach.getCoachId());
         assertThat(result.get().getUserId()).isEqualTo(id);
     }
 
