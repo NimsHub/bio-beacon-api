@@ -1,0 +1,605 @@
+openapi: "3.0.3"
+info:
+  title: "Bio Beacon API"
+  description: "API Documentation of Bio Beacon"
+  version: "1.0.0"
+servers:
+  - url: "http://biobeaconapi-env.eba-xficc75t.us-east-1.elasticbeanstalk.com"
+paths:
+  /:
+    get:
+      summary: "GET "
+      operationId: "hello"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/v1/auth/register:
+    post:
+      summary: "POST api/v1/auth/register"
+      operationId: "register"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RegistrationResponse"
+  /api/v1/auth/authenticate:
+    post:
+      summary: "POST api/v1/auth/authenticate"
+      operationId: "authenticate"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthenticationRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+  /api/v1/users:
+    get:
+      summary: "GET api/v1/users"
+      operationId: "getUsers"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/User"
+  /api/v1/coaches/update-coach:
+    put:
+      summary: "PUT api/v1/coaches/update-coach"
+      operationId: "updateCoach"
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCoachRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+  /api/v1/coaches/create-coach:
+    post:
+      summary: "POST api/v1/coaches/create-coach"
+      operationId: "createCoach"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCoachRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+  /api/v1/coaches/get-all:
+    get:
+      summary: "GET api/v1/coaches/get-all"
+      operationId: "getCoaches"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/CoachResponse"
+  /api/v1/coaches/get-coach:
+    get:
+      summary: "GET api/v1/coaches/get-coach"
+      operationId: "getCoach"
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CoachDetailsResponse"
+  /api/v1/devices:
+    post:
+      summary: "POST api/v1/devices"
+      operationId: "createDevice"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Device"
+    get:
+      summary: "GET api/v1/devices"
+      operationId: "getAllDevices"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/Device"
+  /api/v1/athletes/update-athlete:
+    put:
+      summary: "PUT api/v1/athletes/update-athlete"
+      operationId: "updateAthlete"
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAthleteRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+  /api/v1/athletes/create-athlete:
+    post:
+      summary: "POST api/v1/athletes/create-athlete"
+      operationId: "createAthlete"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateAthleteRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AuthenticationResponse"
+  /api/v1/athletes/get-all:
+    get:
+      summary: "GET api/v1/athletes/get-all"
+      operationId: "getAthletes"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AthleteResponse"
+  /api/v1/athletes/get-athlete:
+    get:
+      summary: "GET api/v1/athletes/get-athlete"
+      operationId: "getAthleteByToken"
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AthleteDetailsResponse"
+  /api/v1/athletes/coach:
+    get:
+      summary: "GET api/v1/athletes/coach"
+      operationId: "getAthletesByCoach"
+      parameters:
+        - name: "Authorization"
+          in: "header"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/AthleteResponse"
+  /api/v1/athletes/athlete/{id}:
+    get:
+      summary: "GET api/v1/athletes/athlete/{id}"
+      operationId: "getAthleteDetailsByAthleteId"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/AthleteDetailsResponse"
+  /api/v1/sessions/create-session:
+    post:
+      summary: "POST api/v1/sessions/create-session"
+      operationId: "createSession"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateSessionRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/v1/sessions/update-session:
+    post:
+      summary: "POST api/v1/sessions/update-session"
+      operationId: "updateSession"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateSessionRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "string"
+  /api/v1/sessions/athlete/{id}:
+    get:
+      summary: "GET api/v1/sessions/athlete/{id}"
+      operationId: "getSessionsByAthleteId"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/SessionResponse"
+  /api/v1/sessions/session/{id}:
+    get:
+      summary: "GET api/v1/sessions/session/{id}"
+      operationId: "getSessionDetailsBySessionId"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+            format: "uuid"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/SessionDetailsResponse"
+components:
+  schemas:
+    RegisterRequest:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+        role:
+          type: "string"
+          enum:
+            - "ADMIN"
+            - "USER"
+            - "COACH"
+            - "ATHLETE"
+    RegistrationResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        token:
+          type: "string"
+    AuthenticationRequest:
+      type: "object"
+      properties:
+        email:
+          type: "string"
+        password:
+          type: "string"
+    AuthenticationResponse:
+      type: "object"
+      properties:
+        token:
+          type: "string"
+    User:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int32"
+        userId:
+          type: "string"
+          format: "uuid"
+        email:
+          type: "string"
+        password:
+          type: "string"
+        role:
+          type: "string"
+          enum:
+            - "ADMIN"
+            - "USER"
+            - "COACH"
+            - "ATHLETE"
+    CreateCoachRequest:
+      type: "object"
+      properties:
+        firstname:
+          type: "string"
+        lastname:
+          type: "string"
+        email:
+          type: "string"
+        password:
+          type: "string"
+        gender:
+          type: "string"
+          enum:
+            - "MALE"
+            - "FEMALE"
+        dateOfBirth:
+          type: "string"
+          format: "date"
+        mobile:
+          type: "string"
+        address:
+          type: "string"
+    CoachResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        email:
+          type: "string"
+        firstname:
+          type: "string"
+        lastname:
+          type: "string"
+    CoachDetailsResponse:
+      type: "object"
+      properties:
+        id:
+          type: "string"
+          format: "uuid"
+        email:
+          type: "string"
+        firstname:
+          type: "string"
+        lastname:
+          type: "string"
+        gender:
+          type: "string"
+          enum:
+            - "MALE"
+            - "FEMALE"
+        dateOfBirth:
+          type: "string"
+          format: "date"
+        mobile:
+          type: "string"
+        address:
+          type: "string"
+    Device:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        apiKey:
+          type: "string"
+        createdAt:
+          type: "string"
+          format: "date-time"
+    CreateAthleteRequest:
+      type: "object"
+      properties:
+        coachId:
+          type: "string"
+          format: "uuid"
+        firstname:
+          type: "string"
+        lastname:
+          type: "string"
+        email:
+          type: "string"
+        password:
+          type: "string"
+        gender:
+          type: "string"
+          enum:
+            - "MALE"
+            - "FEMALE"
+        dateOfBirth:
+          type: "string"
+          format: "date"
+        height:
+          type: "number"
+          format: "double"
+        weight:
+          type: "number"
+          format: "double"
+        mobile:
+          type: "string"
+        address:
+          type: "string"
+        occupation:
+          type: "string"
+    AthleteResponse:
+      type: "object"
+      properties:
+        athleteId:
+          type: "string"
+          format: "uuid"
+        firstname:
+          type: "string"
+        lastname:
+          type: "string"
+        email:
+          type: "string"
+        gender:
+          type: "string"
+          enum:
+            - "MALE"
+            - "FEMALE"
+        occupation:
+          type: "string"
+    AthleteDetailsResponse:
+      type: "object"
+      properties:
+        athleteId:
+          type: "string"
+          format: "uuid"
+        coachId:
+          type: "string"
+          format: "uuid"
+        firstname:
+          type: "string"
+        lastname:
+          type: "string"
+        email:
+          type: "string"
+        gender:
+          type: "string"
+          enum:
+            - "MALE"
+            - "FEMALE"
+        dateOfBirth:
+          type: "string"
+          format: "date"
+        height:
+          type: "number"
+          format: "double"
+        weight:
+          type: "number"
+          format: "double"
+        mobile:
+          type: "string"
+        address:
+          type: "string"
+        occupation:
+          type: "string"
+    CreateSessionRequest:
+      type: "object"
+      properties:
+        deviceId:
+          type: "integer"
+          format: "int64"
+        userEmail:
+          type: "string"
+    UpdateSessionRequest:
+      type: "object"
+      properties:
+        deviceId:
+          type: "integer"
+          format: "int64"
+        heartRate:
+          type: "string"
+        bloodPressure:
+          type: "string"
+        respirationRate:
+          type: "string"
+        startDateTime:
+          type: "string"
+          format: "date-time"
+        endDateTime:
+          type: "string"
+          format: "date-time"
+    SessionResponse:
+      type: "object"
+      properties:
+        sessionId:
+          type: "string"
+          format: "uuid"
+        deviceId:
+          type: "integer"
+          format: "int64"
+        startDateTime:
+          type: "string"
+          format: "date-time"
+        endDateTime:
+          type: "string"
+          format: "date-time"
+        sessionDuration:
+          type: "integer"
+          format: "int64"
+    SessionDetailsResponse:
+      type: "object"
+      properties:
+        heartRate:
+          type: "string"
+        bloodPressure:
+          type: "string"
+        respirationRate:
+          type: "string"
