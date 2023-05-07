@@ -8,7 +8,7 @@ spring:
   datasource:
     url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
     username: bio-beacon-admin
-    password: DUE1E9YrbtOCmbAZTm74rw
+    password: 5lTyCI4FIzWAf8txcBTR3A
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -27,7 +27,7 @@ spring:
     schemas: public
     url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
     user: bio-beacon-admin
-    password: DUE1E9YrbtOCmbAZTm74rw
+    password: 5lTyCI4FIzWAf8txcBTR3A
     enabled: true
 
 logging.level:
