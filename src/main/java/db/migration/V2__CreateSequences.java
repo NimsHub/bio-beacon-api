@@ -6,6 +6,9 @@ import org.flywaydb.core.api.migration.Context;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Database migration for creating necessary sequences at the initial state
+ */
 public class V2__CreateSequences extends BaseJavaMigration {
 
     @Override

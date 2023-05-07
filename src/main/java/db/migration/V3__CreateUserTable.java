@@ -6,6 +6,9 @@ import org.flywaydb.core.api.migration.Context;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+/**
+ * Database migration for creating user table
+ */
 public class V3__CreateUserTable extends BaseJavaMigration {
     @Override
     public void migrate(Context context) throws Exception {
