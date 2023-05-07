@@ -9,7 +9,6 @@ import java.sql.SQLException;
 /**
  * Database migration for creating SessionDetails table
  */
-@SuppressWarnings({"java:S101", "unused"})
 public class V7__CreateSessionDetailsTable extends BaseJavaMigration {
     @Override
     public void migrate(Context context) throws Exception {
