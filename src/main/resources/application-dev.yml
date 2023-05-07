@@ -1,19 +1,19 @@
 server:
-  port: 8080
+  port: 9090
 
 secret.key: 357638792F423F4528482B4D6251655468576D597133743677397A2443264629
 
 spring:
 
   datasource:
-    url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
-    username: bio-beacon-admin
-    password: DUE1E9YrbtOCmbAZTm74rw
+    url: jdbc:postgresql://127.0.0.1:26257/defaultdb?sslmode=disable
+    username: admin
+    password: admin
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     show-sql: true
     properties:
       hibernate:
@@ -25,10 +25,10 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     schemas: public
-    url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
-    user: bio-beacon-admin
-    password: DUE1E9YrbtOCmbAZTm74rw
-    enabled: false
+    url: jdbc:postgresql://127.0.0.1:26257/defaultdb?sslmode=disable
+    user: admin
+    password: admin
+    enabled: true
 
 logging.level:
   org.hibernate: error
