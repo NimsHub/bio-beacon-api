@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
- * Database migration for creating user table
+ * Database migration for creating User table
  */
 @SuppressWarnings({"java:S101", "unused"})
 public class V3__CreateUserTable extends BaseJavaMigration {
