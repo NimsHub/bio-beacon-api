@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Database migration for creating User table
  */
-@SuppressWarnings({"java:S101", "unused"})
+//@SuppressWarnings({"java:S101", "unused"})
 public class V3__CreateUserTable extends BaseJavaMigration {
     @Override
     public void migrate(Context context) throws Exception {
