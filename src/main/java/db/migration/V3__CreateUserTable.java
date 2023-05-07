@@ -9,6 +9,7 @@ import java.sql.SQLException;
 /**
  * Database migration for creating user table
  */
+@SuppressWarnings({"java:S101", "unused"})
 public class V3__CreateUserTable extends BaseJavaMigration {
     @Override
     public void migrate(Context context) throws Exception {
@@ -19,13 +20,13 @@ public class V3__CreateUserTable extends BaseJavaMigration {
         try (PreparedStatement statement =
                      context
                              .getConnection()
-                             .prepareStatement("create table if not exists _user(\n" +
-                                     " id bigint not null primary key,\n" +
-                                     " email varchar(255) constraint email_cons unique,\n" +
-                                     " is_enabled boolean not null,\n" +
-                                     " password varchar(255),\n" +
-                                     " role varchar(255),\n" +
-                                     " user_id uuid\n" +
+                             .prepareStatement("create table if not exists _user(" +
+                                     " id bigint not null primary key," +
+                                     " email varchar(255) constraint email_cons unique," +
+                                     " is_enabled boolean not null," +
+                                     " password varchar(255)," +
+                                     " role varchar(255)," +
+                                     " user_id uuid" +
                                      ");")) {
             statement.execute();
         }

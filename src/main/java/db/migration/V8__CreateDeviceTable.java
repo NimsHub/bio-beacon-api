@@ -9,6 +9,7 @@ import java.sql.SQLException;
 /**
  * Database migration for creating Device table
  */
+@SuppressWarnings({"java:S101", "unused"})
 public class V8__CreateDeviceTable extends BaseJavaMigration {
 
     @Override
