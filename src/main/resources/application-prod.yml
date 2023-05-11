@@ -1,15 +1,15 @@
 server:
   port: 5000
 
-secret.key: 357638792F423F4528482B4D6251655468576D597133743677397A2443264629
+secret.key: ${SECRET_KEY}
 test-key: ${TEST_KEY}
 
 spring:
 
   datasource:
-    url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
-    username: bio-beacon-admin
-    password: 5lTyCI4FIzWAf8txcBTR3A
+    url: ${PRIME_DB_URL}
+    username: ${PRIME_DB_USER}
+    password: ${PRIME_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -26,9 +26,9 @@ spring:
     locations: classpath:db/migration
     baseline-on-migrate: true
     schemas: public
-    url: jdbc:postgresql://bio-beacon-8947.7tt.cockroachlabs.cloud:26257/bio-beacon-db
-    user: bio-beacon-admin
-    password: 5lTyCI4FIzWAf8txcBTR3A
+    url: ${PRIME_DB_URL}
+    user: ${PRIME_DB_USER}
+    password: ${PRIME_DB_PASSWORD}
     enabled: true
 
 logging.level:
