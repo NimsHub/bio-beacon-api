@@ -33,7 +33,7 @@ public class AppConfig {
     public FilterRegistrationBean<ApiKeyFilter> apiKeyFilter() {
         FilterRegistrationBean<ApiKeyFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(new ApiKeyFilter(deviceRepository, filterChainExceptionHandler));
-        registration.addUrlPatterns("/api/v1/session/update-session");
+        registration.addUrlPatterns("/api/v1/sessions/update-session");
         return registration;
     }
 
