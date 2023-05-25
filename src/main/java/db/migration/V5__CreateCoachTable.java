@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * Database migration for creating Coach Table
  */
-//@SuppressWarnings({"java:S101", "unused"})
+@SuppressWarnings({"java:S101", "unused"})
 public class V5__CreateCoachTable extends BaseJavaMigration {
     @Override
     public void migrate(Context context) throws Exception {
