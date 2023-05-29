@@ -23,6 +23,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors().and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -35,11 +36,9 @@ public class SecurityConfig {
                         "/api/v1/athletes/create-athlete")
                 .permitAll()
                 .anyRequest()
-                .authenticated()
-                .and()
+                .authenticated().and()
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
