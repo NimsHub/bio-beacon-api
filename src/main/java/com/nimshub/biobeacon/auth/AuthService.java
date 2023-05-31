@@ -2,6 +2,7 @@ package com.nimshub.biobeacon.auth;
 
 import com.nimshub.biobeacon.config.JwtService;
 import com.nimshub.biobeacon.exceptions.UserAlreadyExistsException;
+import com.nimshub.biobeacon.user.Role;
 import com.nimshub.biobeacon.user.User;
 import com.nimshub.biobeacon.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -74,7 +77,10 @@ public class AuthService {
             throw new BadCredentialsException("Password is incorrect for user : [%s]"
                     .formatted(request.getEmail()));
         }
-        var jwtToken = jwtService.generateToken(user);
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role",user.getRole());
+
+        var jwtToken = jwtService.generateToken(extraClaims,user);
         logger.info("User authentication success");
 
         return AuthenticationResponse.builder()
