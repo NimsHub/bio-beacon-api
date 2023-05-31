@@ -33,7 +33,8 @@ public class SecurityConfig {
                         "/api/v1/sessions/update-session",
                         "/api/v1/coaches/get-all",
                         "/api/v1/coaches/create-coach",
-                        "/api/v1/athletes/create-athlete")
+                        "/api/v1/athletes/create-athlete",
+                        "/api/v1/auth/authenticate")
                 .permitAll()
                 .anyRequest()
                 .authenticated().and()
