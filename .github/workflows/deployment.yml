@@ -22,7 +22,6 @@ jobs:
         run: mvn -B package --file pom.xml
 
       - name: Deploy to EB
-        run: ls -a
         uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
