@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+
+  db:
+    image: cockroachdb/cockroach:v22.2.7
+    container_name: "db"
+    environment:
+      COCKROACH_DATABASE: bio-beacon-db
+      COCKROACH_USER: admin
+      COCKROACH_PASSWORD: admin
+    volumes:
+      - /home/nims/docker-volumes/bio-beacon-db-store:/cockroach/cockroach-data
+      - /home/nims/docker-volumes:/docker-entrypoint.initdb.d
+    working_dir: /cockroach
+    ports:
+      - "26257:26257"
+      - "8080:8080"
+    command: start-single-node --insecure
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mqtt5
+    ports:
+        - "1883:1883" #default mqtt port
+        - "9001:9001" #default mqtt port for websockets
+    volumes:
+        - /home/nims/docker-volumes/mosquitto/config:/mosquitto/config:rw
+        - /home/nims/docker-volumes/mosquitto/data:/mosquitto/data:rw
+        - /home/nims/docker-volumes/mosquitto/log:/mosquitto/log:rw
+networks:
+  default:
+    name: mqtt5-network
