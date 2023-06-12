@@ -30,6 +30,22 @@ spring:
     password: admin
     enabled: true
 
+  task:
+    scheduling:
+      pool:
+        size: 50
+
 logging.level:
   org.hibernate: error
   com.nimshub: trace
+
+scheduling:
+  enabled: true
+
+mqtt:
+  automaticReconnect: true
+  cleanSession: true
+  connectionTimeout: 10
+  clientId: bio-beacon
+  hostname: localhost
+  port: 1883
