@@ -35,4 +35,8 @@ public class MessagingService {
             log.info(message);
         });
     }
+    public void unsubscribe(String topic) throws MqttException {
+        mqttClient.unsubscribe(topic);
+        log.info("successfully unsubscribed from {}",topic);
+    }
 }

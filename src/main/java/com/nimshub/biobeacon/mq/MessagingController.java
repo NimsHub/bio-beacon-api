@@ -25,4 +25,9 @@ public class MessagingController {
         messagingService.subscribe(TOPIC);
         return "subscribed";
     }
+    @GetMapping("/message/unsubscribe")
+    public String unsubscribe() throws MqttException {
+        messagingService.unsubscribe(TOPIC);
+        return "unsubscribed";
+    }
 }
