@@ -5,10 +5,8 @@ import com.nimshub.biobeacon.device.Device;
 import com.nimshub.biobeacon.device.DeviceRepository;
 import com.nimshub.biobeacon.exceptions.DeviceNotFoundException;
 import com.nimshub.biobeacon.exceptions.SessionNotFoundException;
-import com.nimshub.biobeacon.session.dto.CreateSessionRequest;
-import com.nimshub.biobeacon.session.dto.SessionDetailsResponse;
-import com.nimshub.biobeacon.session.dto.SessionResponse;
-import com.nimshub.biobeacon.session.dto.UpdateSessionRequest;
+import com.nimshub.biobeacon.session.dto.*;
+import com.nimshub.biobeacon.utils.BitReader;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +17,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +32,8 @@ public class SessionService {
     private final AthleteRepository athleteRepository;
     private final DeviceRepository deviceRepository;
     private final SessionDetailsRepositoryRepository sessionDetailsRepositoryRepository;
-
+    private final SessionMotionDataRepository sessionMotionDataRepository;
+    private final BitReader bitReader;
     /**
      * @param id : UUID
      * @return List<Session>
@@ -114,9 +114,19 @@ public class SessionService {
                 .bloodPressure(request.getBloodPressure())
                 .respirationRate(request.getRespirationRate())
                 .heartRate(request.getHeartRate())
+                .ecg(request.getEcg())
+                .build();
+
+        SessionMotionData motionData = SessionMotionData.builder()
+                .deviceOneMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
+                .deviceTwoMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
+                .deviceThreeMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
+                .deviceFourMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
+                .deviceFiveMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
                 .build();
 
         sessionDetailsRepositoryRepository.save(sessionDetails);
+        sessionMotionDataRepository.save(motionData);
     }
 
     /**
@@ -138,6 +148,24 @@ public class SessionService {
                 .heartRate(sessionDetails.getHeartRate())
                 .bloodPressure(sessionDetails.getBloodPressure())
                 .respirationRate(sessionDetails.getRespirationRate())
+                .build();
+    }
+
+    public SessionMotionDataResponse getMotionData(UUID sessionId){
+        Session session = sessionRepository.findBySessionId(sessionId)
+                .orElseThrow(() -> new SessionNotFoundException("Session with ID : [%s] not found"
+                        .formatted(sessionId)));
+
+        SessionMotionData motionData = sessionMotionDataRepository.findSessionMotionDataBySession(session)
+                .orElseThrow(()-> new SessionNotFoundException("Motion data for session : [%s] not found"
+                        .formatted(sessionId)));
+
+        return SessionMotionDataResponse.builder()
+                .deviceOneMotionData(motionData.getDeviceOneMotionData())
+                .deviceTwoMotionData(motionData.getDeviceTwoMotionData())
+                .deviceThreeMotionData(motionData.getDeviceThreeMotionData())
+                .deviceFourMotionData(motionData.getDeviceFourMotionData())
+                .deviceFiveMotionData(motionData.getDeviceFiveMotionData())
                 .build();
     }
 
