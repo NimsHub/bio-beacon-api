@@ -11,9 +11,14 @@ public class UpdateSessionRequest {
     private String heartRate;
     private String bloodPressure;
     private String respirationRate;
+    private String ecg;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime startDateTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
     private LocalDateTime endDateTime;
-
+    private String deviceOneMotionData;
+    private String deviceTwoMotionData;
+    private String deviceThreeMotionData;
+    private String deviceFourMotionData;
+    private String deviceFiveMotionData;
 }
