@@ -1,9 +1,6 @@
 package com.nimshub.biobeacon.session;
 
-import com.nimshub.biobeacon.session.dto.CreateSessionRequest;
-import com.nimshub.biobeacon.session.dto.SessionDetailsResponse;
-import com.nimshub.biobeacon.session.dto.SessionResponse;
-import com.nimshub.biobeacon.session.dto.UpdateSessionRequest;
+import com.nimshub.biobeacon.session.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,10 +43,16 @@ public class SessionController {
         return new ResponseEntity<>("session details has been updated", HttpStatus.OK);
     }
 
-    @GetMapping("/session/{id}")
+    @GetMapping("/session-details/{id}")
     public ResponseEntity<SessionDetailsResponse> getSessionDetailsBySessionId(@PathVariable("id") UUID id) {
         SessionDetailsResponse sessionDetailsResponse = sessionService.getSessionDetails(id);
         logger.info("getting session details of the session : {}", id);
         return new ResponseEntity<>(sessionDetailsResponse, HttpStatus.OK);
+    }
+    @GetMapping("/session-motion-data/{id}")
+    public ResponseEntity<SessionMotionDataResponse> getSessionMotionDataBySessionId(@PathVariable("id") UUID id) {
+        SessionMotionDataResponse motionData = sessionService.getMotionData(id);
+        logger.info("getting motion data of the session : {}", id);
+        return new ResponseEntity<>(motionData, HttpStatus.OK);
     }
 }
