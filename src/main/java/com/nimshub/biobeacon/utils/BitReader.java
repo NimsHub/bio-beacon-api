@@ -4,6 +4,8 @@ import com.nimshub.biobeacon.exceptions.ByteCodeException;
 import org.springframework.stereotype.Service;
 
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringJoiner;
 
 import static com.nimshub.biobeacon.constants.Constants.*;
@@ -25,33 +27,53 @@ public class BitReader {
     }
 
 
-    private String createMotionData(byte[] data) {
+    private Map<Integer, String> createMotionData(byte[] data, Integer[] modules) {
 
-        if (data.length % 4 != 0) throw new ByteCodeException("Data error: missing or redundant data");
+        if (data.length % CHUNK_SIZE != 0) throw new ByteCodeException("Data error: missing or redundant data");
 
-        StringJoiner csv = new StringJoiner(COMMA);
+        Map<Integer, String> motionData = new HashMap<>();
 
-        for (int i = 0; i < data.length; i += 4) {
-            byte[] accelerationBytes = {
-                    data[i],
-                    data[i + 1],
-                    data[i + 2],
-                    data[i + 3]
-            };
+        int numberOfModules = modules.length;
 
-            Acceleration acceleration = getAcceleration(accelerationBytes);
+        for (int j = 0; j < numberOfModules; j++) {
+            StringJoiner csv = new StringJoiner(COMMA);
 
-            csv.add(acceleration.getX());
-            csv.add(acceleration.getY());
-            csv.add(acceleration.getZ());
+            for (int i = j * CHUNK_SIZE; i < data.length; i += CHUNK_SIZE * numberOfModules) {
+
+                byte[] accelerationBytes = {
+                        data[i],
+                        data[i + 1],
+                        data[i + 2],
+                        data[i + 3]
+                };
+
+                Acceleration acceleration = getAcceleration(accelerationBytes);
+
+                csv.add(acceleration.getX());
+                csv.add(acceleration.getY());
+                csv.add(acceleration.getZ());
+            }
+            motionData.put(modules[j], csv.toString());
         }
-        return csv.toString();
+        return motionData;
     }
 
-    public String getMotionData(String motionData) {
+    public Integer[] getModules(String modules) {
+
+        String[] parts = modules.split(COMMA);
+        Integer[] array = new Integer[parts.length];
+
+        for (int i = 0; i < parts.length; i++) {
+            array[i] = Integer.parseInt(parts[i]);
+        }
+        return array;
+    }
+
+    public Map<Integer, String> getMotionData(String modules, String motionData) {
+
         return createMotionData(
                 Base64
                         .getDecoder()
-                        .decode(motionData));
+                        .decode(motionData), getModules(modules));
     }
 }
