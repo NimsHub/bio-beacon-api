@@ -10,8 +10,17 @@ import java.util.StringJoiner;
 
 import static com.nimshub.biobeacon.constants.Constants.*;
 
+/**
+ * This class provides functionality for bit manipulation and read motion data
+ */
 @Service
 public class BitReader {
+    /**
+     * This method reads 4 bytes and returns acceleration data
+     *
+     * @param accelerationBytes : byte[]
+     * @return Acceleration
+     */
     private Acceleration getAcceleration(byte[] accelerationBytes) {
 
         boolean isDataAvailable = ((accelerationBytes[0] & 0x80) >> 7) == 0;
@@ -26,7 +35,13 @@ public class BitReader {
         return new Acceleration(Integer.toString(x), Integer.toString(y), Integer.toString(z));
     }
 
-
+    /**
+     * This method creates a motion data map for all the modules
+     *
+     * @param data    : byte[]
+     * @param modules : Integer[]
+     * @return Map<Integer, String>
+     */
     private Map<Integer, String> createMotionData(byte[] data, Integer[] modules) {
 
         if (data.length % CHUNK_SIZE != 0) throw new ByteCodeException("Data error: missing or redundant data");
@@ -58,6 +73,12 @@ public class BitReader {
         return motionData;
     }
 
+    /**
+     * This method returns the modules as an Integer array
+     *
+     * @param modules : String
+     * @return Integer []
+     */
     public Integer[] getModules(String modules) {
 
         String[] parts = modules.split(COMMA);
@@ -69,6 +90,13 @@ public class BitReader {
         return array;
     }
 
+    /**
+     * This method retrieves the motion data map by calling createMotionData method
+     *
+     * @param modules    : String
+     * @param motionData : String
+     * @return Map<Integer, String>
+     */
     public Map<Integer, String> getMotionData(String modules, String motionData) {
 
         return createMotionData(

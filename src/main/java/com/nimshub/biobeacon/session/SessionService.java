@@ -158,6 +158,11 @@ public class SessionService {
                 .build();
     }
 
+    /**
+     * This method retrieves motion data of a session
+     * @param sessionId : UUID
+     * @return SessionMotionDataResponse
+     */
     public SessionMotionDataResponse getMotionData(UUID sessionId) {
         Session session = sessionRepository.findBySessionId(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException("Session with ID : [%s] not found"
