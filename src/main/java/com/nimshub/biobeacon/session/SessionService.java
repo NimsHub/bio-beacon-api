@@ -17,8 +17,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -34,6 +34,7 @@ public class SessionService {
     private final SessionDetailsRepositoryRepository sessionDetailsRepositoryRepository;
     private final SessionMotionDataRepository sessionMotionDataRepository;
     private final BitReader bitReader;
+
     /**
      * @param id : UUID
      * @return List<Session>
@@ -64,10 +65,12 @@ public class SessionService {
     public void createSession(CreateSessionRequest request) {
 
         Device device = deviceRepository.findById(request.getDeviceId())
-                .orElseThrow(() -> new DeviceNotFoundException("Device with id : [%s] Not Found".formatted(request.getDeviceId())));
+                .orElseThrow(() -> new DeviceNotFoundException("Device with id : [%s] Not Found"
+                        .formatted(request.getDeviceId())));
 
         var athlete = athleteRepository.findByEmail(request.getUserEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User with email : [%s] Not Found".formatted(request.getUserEmail())));
+                .orElseThrow(() -> new UsernameNotFoundException("User with email : [%s] Not Found"
+                        .formatted(request.getUserEmail())));
 
         Session session = Session.builder()
                 .sessionId(UUID.randomUUID())
@@ -94,6 +97,7 @@ public class SessionService {
 
     /**
      * This method updates the session details
+     *
      * @param request : UpdateSessionRequest
      */
     @Transactional
@@ -117,12 +121,14 @@ public class SessionService {
                 .ecg(request.getEcg())
                 .build();
 
+        Map<Integer, String> data = bitReader.getMotionData(request.getModules(), request.getMotionData());
+
         SessionMotionData motionData = SessionMotionData.builder()
-                .deviceOneMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
-                .deviceTwoMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
-                .deviceThreeMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
-                .deviceFourMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
-                .deviceFiveMotionData(bitReader.getMotionData(request.getDeviceOneMotionData()))
+                .deviceOneMotionData(data.get(1))
+                .deviceTwoMotionData(data.get(2))
+                .deviceThreeMotionData(data.get(3))
+                .deviceFourMotionData(data.get(4))
+                .deviceFiveMotionData(data.get(5))
                 .build();
 
         sessionDetailsRepositoryRepository.save(sessionDetails);
@@ -131,6 +137,7 @@ public class SessionService {
 
     /**
      * This method retrieves the details of a session
+     *
      * @param sessionId : UUID
      * @return SessionDetailsResponse
      */
@@ -151,13 +158,13 @@ public class SessionService {
                 .build();
     }
 
-    public SessionMotionDataResponse getMotionData(UUID sessionId){
+    public SessionMotionDataResponse getMotionData(UUID sessionId) {
         Session session = sessionRepository.findBySessionId(sessionId)
                 .orElseThrow(() -> new SessionNotFoundException("Session with ID : [%s] not found"
                         .formatted(sessionId)));
 
         SessionMotionData motionData = sessionMotionDataRepository.findSessionMotionDataBySession(session)
-                .orElseThrow(()-> new SessionNotFoundException("Motion data for session : [%s] not found"
+                .orElseThrow(() -> new SessionNotFoundException("Motion data for session : [%s] not found"
                         .formatted(sessionId)));
 
         return SessionMotionDataResponse.builder()
