@@ -7,4 +7,5 @@ public class Constants {
     }
     public static final String NO_DATA = "*";
     public static final String COMMA = ",";
+    public static final Integer CHUNK_SIZE = 4;
 }
