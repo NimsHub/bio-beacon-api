@@ -20,6 +20,7 @@ public class V2__CreateSequences extends BaseJavaMigration {
         createDeviceSeq(context);
         createSessionSeq(context);
         createSessionDetailsSeq(context);
+        createMotionDataSeq(context);
     }
 
     private void createUserSeq(Context context) throws SQLException {
@@ -75,5 +76,12 @@ public class V2__CreateSequences extends BaseJavaMigration {
             statement.execute();
         }
     }
-
+    private void createMotionDataSeq(Context context) throws SQLException {
+        try (PreparedStatement statement =
+                     context
+                             .getConnection()
+                             .prepareStatement("create sequence if not exists session_motion_seq")) {
+            statement.execute();
+        }
+    }
 }
