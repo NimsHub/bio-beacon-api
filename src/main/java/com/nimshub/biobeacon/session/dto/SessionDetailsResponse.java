@@ -7,6 +7,6 @@ import lombok.Data;
 @Builder
 public class SessionDetailsResponse {
     private String heartRate;
-    private String bloodPressure;
+    private String bloodOxygen;
     private String respirationRate;
 }

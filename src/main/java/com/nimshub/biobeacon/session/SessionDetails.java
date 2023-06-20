@@ -27,7 +27,7 @@ public class SessionDetails {
     )
     private Session session;
     private String heartRate;
-    private String bloodPressure;
+    private String bloodOxygen;
     private String respirationRate;
     private String ecg;
 }

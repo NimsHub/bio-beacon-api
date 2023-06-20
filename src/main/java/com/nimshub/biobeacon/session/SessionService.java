@@ -115,7 +115,7 @@ public class SessionService {
 
         SessionDetails sessionDetails = SessionDetails.builder()
                 .session(session)
-                .bloodPressure(request.getBloodPressure())
+                .bloodOxygen(request.getBloodOxygen())
                 .respirationRate(request.getRespirationRate())
                 .heartRate(request.getHeartRate())
                 .ecg(request.getEcg())
@@ -124,6 +124,7 @@ public class SessionService {
         Map<Integer, String> data = bitReader.getMotionData(request.getModules(), request.getMotionData());
 
         SessionMotionData motionData = SessionMotionData.builder()
+                .session(session)
                 .deviceOneMotionData(data.get(1))
                 .deviceTwoMotionData(data.get(2))
                 .deviceThreeMotionData(data.get(3))
@@ -153,7 +154,7 @@ public class SessionService {
 
         return SessionDetailsResponse.builder()
                 .heartRate(sessionDetails.getHeartRate())
-                .bloodPressure(sessionDetails.getBloodPressure())
+                .bloodOxygen(sessionDetails.getBloodOxygen())
                 .respirationRate(sessionDetails.getRespirationRate())
                 .build();
     }

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class UpdateSessionRequest {
     private Long deviceId;
     private String heartRate;
-    private String bloodPressure;
+    private String bloodOxygen;
     private String respirationRate;
     private String ecg;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", shape = JsonFormat.Shape.STRING)
