@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class Task {
-//    @Scheduled(fixedRate = 1000)
-//    @Async
+    @Scheduled(fixedRate = 10000)
+    @Async
     void testRun() throws InterruptedException {
-
+        System.out.println(Thread.currentThread().getName());
     }
 }
