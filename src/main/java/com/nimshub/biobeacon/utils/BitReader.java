@@ -23,7 +23,7 @@ public class BitReader {
      */
     private Acceleration getAcceleration(byte[] accelerationBytes) {
 
-        boolean isDataAvailable = ((accelerationBytes[0] & 0x80) >> 7) == 0;
+        boolean isDataAvailable = ((accelerationBytes[0] & 0x80) >> 7) == 1;
 
         if (isDataAvailable)
             return new Acceleration(NO_DATA);
