@@ -5,10 +5,8 @@ import com.nimshub.biobeacon.device.Device;
 import com.nimshub.biobeacon.device.DeviceRepository;
 import com.nimshub.biobeacon.exceptions.DeviceNotFoundException;
 import com.nimshub.biobeacon.exceptions.SessionNotFoundException;
-import com.nimshub.biobeacon.session.dto.CreateSessionRequest;
-import com.nimshub.biobeacon.session.dto.SessionDetailsResponse;
-import com.nimshub.biobeacon.session.dto.SessionResponse;
-import com.nimshub.biobeacon.session.dto.UpdateSessionRequest;
+import com.nimshub.biobeacon.session.dto.*;
+import com.nimshub.biobeacon.utils.BitReader;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +18,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -33,6 +32,8 @@ public class SessionService {
     private final AthleteRepository athleteRepository;
     private final DeviceRepository deviceRepository;
     private final SessionDetailsRepositoryRepository sessionDetailsRepositoryRepository;
+    private final SessionMotionDataRepository sessionMotionDataRepository;
+    private final BitReader bitReader;
 
     /**
      * @param id : UUID
@@ -64,10 +65,12 @@ public class SessionService {
     public void createSession(CreateSessionRequest request) {
 
         Device device = deviceRepository.findById(request.getDeviceId())
-                .orElseThrow(() -> new DeviceNotFoundException("Device with id : [%s] Not Found".formatted(request.getDeviceId())));
+                .orElseThrow(() -> new DeviceNotFoundException("Device with id : [%s] Not Found"
+                        .formatted(request.getDeviceId())));
 
         var athlete = athleteRepository.findByEmail(request.getUserEmail())
-                .orElseThrow(() -> new UsernameNotFoundException("User with email : [%s] Not Found".formatted(request.getUserEmail())));
+                .orElseThrow(() -> new UsernameNotFoundException("User with email : [%s] Not Found"
+                        .formatted(request.getUserEmail())));
 
         Session session = Session.builder()
                 .sessionId(UUID.randomUUID())
@@ -94,6 +97,7 @@ public class SessionService {
 
     /**
      * This method updates the session details
+     *
      * @param request : UpdateSessionRequest
      */
     @Transactional
@@ -111,16 +115,30 @@ public class SessionService {
 
         SessionDetails sessionDetails = SessionDetails.builder()
                 .session(session)
-                .bloodPressure(request.getBloodPressure())
+                .bloodOxygen(request.getBloodOxygen())
                 .respirationRate(request.getRespirationRate())
                 .heartRate(request.getHeartRate())
+                .ecg(request.getEcg())
+                .build();
+
+        Map<Integer, String> data = bitReader.getMotionData(request.getModules(), request.getMotionData());
+
+        SessionMotionData motionData = SessionMotionData.builder()
+                .session(session)
+                .deviceOneMotionData(data.get(1))
+                .deviceTwoMotionData(data.get(2))
+                .deviceThreeMotionData(data.get(3))
+                .deviceFourMotionData(data.get(4))
+                .deviceFiveMotionData(data.get(5))
                 .build();
 
         sessionDetailsRepositoryRepository.save(sessionDetails);
+        sessionMotionDataRepository.save(motionData);
     }
 
     /**
      * This method retrieves the details of a session
+     *
      * @param sessionId : UUID
      * @return SessionDetailsResponse
      */
@@ -136,8 +154,31 @@ public class SessionService {
 
         return SessionDetailsResponse.builder()
                 .heartRate(sessionDetails.getHeartRate())
-                .bloodPressure(sessionDetails.getBloodPressure())
+                .bloodOxygen(sessionDetails.getBloodOxygen())
                 .respirationRate(sessionDetails.getRespirationRate())
+                .build();
+    }
+
+    /**
+     * This method retrieves motion data of a session
+     * @param sessionId : UUID
+     * @return SessionMotionDataResponse
+     */
+    public SessionMotionDataResponse getMotionData(UUID sessionId) {
+        Session session = sessionRepository.findBySessionId(sessionId)
+                .orElseThrow(() -> new SessionNotFoundException("Session with ID : [%s] not found"
+                        .formatted(sessionId)));
+
+        SessionMotionData motionData = sessionMotionDataRepository.findSessionMotionDataBySession(session)
+                .orElseThrow(() -> new SessionNotFoundException("Motion data for session : [%s] not found"
+                        .formatted(sessionId)));
+
+        return SessionMotionDataResponse.builder()
+                .deviceOneMotionData(motionData.getDeviceOneMotionData())
+                .deviceTwoMotionData(motionData.getDeviceTwoMotionData())
+                .deviceThreeMotionData(motionData.getDeviceThreeMotionData())
+                .deviceFourMotionData(motionData.getDeviceFourMotionData())
+                .deviceFiveMotionData(motionData.getDeviceFiveMotionData())
                 .build();
     }
 

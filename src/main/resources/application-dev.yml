@@ -33,3 +33,6 @@ spring:
 logging.level:
   org.hibernate: error
   com.nimshub: trace
+
+scheduling:
+  enabled: false
