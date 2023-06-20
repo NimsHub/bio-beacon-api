@@ -41,11 +41,3 @@ logging.level:
 
 scheduling:
   enabled: true
-
-mqtt:
-  automaticReconnect: true
-  cleanSession: true
-  connectionTimeout: 10
-  clientId: bio-beacon
-  hostname: localhost
-  port: 1883
