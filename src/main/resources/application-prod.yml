@@ -31,6 +31,9 @@ spring:
     password: ${PRIME_DB_PASSWORD}
     enabled: true
 
+scheduling:
+  enabled: false
+
 logging.level:
   org.hibernate: error
   com.nimshub: trace
