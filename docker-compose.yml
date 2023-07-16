@@ -6,9 +6,9 @@ services:
     image: cockroachdb/cockroach:v22.2.7
     container_name: "db"
     environment:
-      COCKROACH_DATABASE: bio-beacon-db
-      COCKROACH_USER: admin
-      COCKROACH_PASSWORD: admin
+      COCKROACH_DATABASE: ${COCKROACH_DATABASE}
+      COCKROACH_USER: ${COCKROACH_USER}
+      COCKROACH_PASSWORD: ${COCKROACH_PASSWORD}
     volumes:
       - /home/user/docker-volumes/bio-beacon-db-store:/cockroach/cockroach-data
       - /home/user/docker-volumes:/docker-entrypoint.initdb.d
@@ -30,18 +30,22 @@ services:
         - /home/user/docker-volumes/mosquitto/log:/mosquitto/log:rw
 
   api:
-    image: ghcr.io/nimshub/bio-beacon-api
+    image: ghcr.io/nimshub/bio-beacon-api:latest
     container_name: "bio-beacon-api"
     ports:
-      - "5000:5000"
+      - ${API_PORT}:${API_PORT}
     depends_on:
       - db
     environment:
-      PORT: ${ API_PORT }
-      SECRET_KEY: ${ SECRET_KEY }
-      PRIME_DB_URL: ${ PRIME_DB_URL }
-      PRIME_DB_USER: ${ PRIME_DB_USER }
-      PRIME_DB_PASSWORD: ${ PRIME_DB_PASSWORD }
+      PORT: ${API_PORT}
+      SECRET_KEY: ${SECRET_KEY}
+      PRIME_DB_URL: ${PRIME_DB_URL}
+      PRIME_DB_USER: ${PRIME_DB_USER}
+      PRIME_DB_PASSWORD: ${PRIME_DB_PASSWORD}
+      MAIL_HOST: ${MAIL_HOST}
+      MAIL_PORT: ${MAIL_PORT}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
 
 networks:
   default:
