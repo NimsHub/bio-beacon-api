@@ -1,0 +1,31 @@
+name: Deploy to On Premise server
+
+on:
+  push:
+    branches: [ "on-premise-release" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CR_PAT: ${{ secrets.CR_PAT }}
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Build image and Publish
+        run: |
+          echo $CR_PAT | docker login ghcr.io --username nimshub --password-stdin
+          docker build --tag ghcr.io/nimshub/bio-beacon-api:latest .
+          docker push ghcr.io/nimshub/bio-beacon-api:latest
+        
