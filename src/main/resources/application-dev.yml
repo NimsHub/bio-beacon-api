@@ -5,6 +5,18 @@ secret.key: 357638792F423F4528482B4D6251655468576D597133743677397A2443264629
 
 spring:
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    password: bzixkzhouzejjabo
+    username: nimsmad@gmail.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   datasource:
     url: jdbc:postgresql://127.0.0.1:26257/defaultdb?sslmode=disable
     username: admin
