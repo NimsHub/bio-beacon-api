@@ -52,4 +52,4 @@ jobs:
             cd ${{ secrets.SERVER_TARGET_LOCATION}}
             echo $CR_PAT | docker login ghcr.io --username ${{secrets.GHCR_USER}} --password-stdin
             docker pull ghcr.io/${{secrets.GHCR_USER}}/bio-beacon-api:latest
-            docker compose up
+            docker compose up -d --build
