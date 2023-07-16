@@ -5,6 +5,18 @@ secret.key: ${SECRET_KEY}
 
 spring:
 
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    password: ${MAIL_PASSWORD}
+    username: ${MAIL_USERNAME}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
   datasource:
     url: ${PRIME_DB_URL}
     username: ${PRIME_DB_USER}
