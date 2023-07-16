@@ -40,3 +40,16 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           source: "docker-compose.yml,nginx/**"
           target: ${{ secrets.SERVER_TARGET_LOCATION }}
+
+      - name: Pull and Redeploy the Application
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.SERVER_KEY }}
+          script: |
+            cd ${{ secrets.SERVER_TARGET_LOCATION}}
+            echo $CR_PAT | docker login ghcr.io --username ${{secrets.GHCR_USER}} --password-stdin
+            docker pull ghcr.io/${{secrets.GHCR_USER}}/bio-beacon-api:latest
+            docker compose up
