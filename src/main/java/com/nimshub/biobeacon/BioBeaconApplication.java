@@ -13,14 +13,14 @@ public class BioBeaconApplication {
         SpringApplication.run(BioBeaconApplication.class, args);
     }
 
-    @Value("test-key")
-    String key;
+    @Value("${server.port}")
+    String port;
 
     @RestController
     public class helloController {
         @GetMapping("/")
         public String hello() {
-            return "Up and Running... "+key;
+            return String.format("Up and Running on Port %s ...", port);
         }
     }
 }
