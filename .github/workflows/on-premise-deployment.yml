@@ -21,11 +21,22 @@ jobs:
           cache: maven
 
       - name: Build with Maven
-        run: mvn -B package -DskipTests --file pom.xml
+        run: mvn -B clean package -DskipTests --file pom.xml
+      - name: Maven verify
+        run: mvn -B clean verify
 
       - name: Build image and Publish
         run: |
-          echo $CR_PAT | docker login ghcr.io --username nimshub --password-stdin
-          docker build --tag ghcr.io/nimshub/bio-beacon-api:latest .
-          docker push ghcr.io/nimshub/bio-beacon-api:latest
-        
+          echo $CR_PAT | docker login ghcr.io --username ${{secrets.GHCR_USER}} --password-stdin
+          docker build --tag ghcr.io/${{secrets.GHCR_USER}}/bio-beacon-api:latest .
+          docker push ghcr.io/${{secrets.GHCR_USER}}/bio-beacon-api:latest
+
+      - name: Copy configuration files
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.SERVER_KEY }}
+          source: "docker-compose.yml,nginx/**"
+          target: ${{ secrets.SERVER_TARGET_LOCATION }}
