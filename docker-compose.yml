@@ -10,8 +10,8 @@ services:
       COCKROACH_USER: admin
       COCKROACH_PASSWORD: admin
     volumes:
-      - /home/nims/docker-volumes/bio-beacon-db-store:/cockroach/cockroach-data
-      - /home/nims/docker-volumes:/docker-entrypoint.initdb.d
+      - /home/user/docker-volumes/bio-beacon-db-store:/cockroach/cockroach-data
+      - /home/user/docker-volumes:/docker-entrypoint.initdb.d
     working_dir: /cockroach
     ports:
       - "26257:26257"
@@ -25,9 +25,24 @@ services:
         - "1883:1883" #default mqtt port
         - "9001:9001" #default mqtt port for websockets
     volumes:
-        - /home/nims/docker-volumes/mosquitto/config:/mosquitto/config:rw
-        - /home/nims/docker-volumes/mosquitto/data:/mosquitto/data:rw
-        - /home/nims/docker-volumes/mosquitto/log:/mosquitto/log:rw
+        - /home/user/docker-volumes/mosquitto/config:/mosquitto/config:rw
+        - /home/user/docker-volumes/mosquitto/data:/mosquitto/data:rw
+        - /home/user/docker-volumes/mosquitto/log:/mosquitto/log:rw
+
+  api:
+    image: ghcr.io/nimshub/bio-beacon-api
+    container_name: "bio-beacon-api"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      PORT: ${ API_PORT }
+      SECRET_KEY: ${ SECRET_KEY }
+      PRIME_DB_URL: ${ PRIME_DB_URL }
+      PRIME_DB_USER: ${ PRIME_DB_USER }
+      PRIME_DB_PASSWORD: ${ PRIME_DB_PASSWORD }
+
 networks:
   default:
     name: mqtt5-network
