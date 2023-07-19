@@ -18,10 +18,7 @@
 [![Deploy to Beanstalk](https://github.com/NimsHub/BioBeacon-Api/actions/workflows/deployment.yml/badge.svg)](https://github.com/NimsHub/BioBeacon-Api/actions/workflows/deployment.yml)
 <hr/>
 <p>
-
 Bio Beacon is a product developed as an undergraduate project. It is a Wireless Wearable Body Area Network which provides an IoT based 
 Workload Management System.
-
 </p>
-
 </div>
