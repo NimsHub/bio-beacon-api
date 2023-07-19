@@ -69,4 +69,6 @@ jobs:
           script: |
             cd ${{ secrets.SERVER_TARGET_LOCATION}}
             docker pull ghcr.io/${{secrets.GHCR_USER}}/bio-beacon-api:latest
+            docker build -t ghcr.io/nimshub/nginx -f nginx/Dockerfile .
             docker compose up -d --build
+            docker image prune -f
