@@ -47,6 +47,14 @@ services:
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
 
+  nginx:
+    image: ghcr.io/nimshub/nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+
 networks:
   default:
     name: mqtt5-network
