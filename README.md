@@ -15,7 +15,8 @@
 
 ![Maven Central](https://img.shields.io/maven-central/v/org.springframework.boot/spring-boot-starter-parent?label=Spring%20%20%20Boot&logo=spring%20boot&versionPrefix=3.0.2)
 [![Java CI with Maven](https://github.com/NimsHub/BioBeacon-Api/actions/workflows/integration.yml/badge.svg)](https://github.com/NimsHub/BioBeacon-Api/actions/workflows/integration.yml)
-[![Deploy to Beanstalk](https://github.com/NimsHub/BioBeacon-Api/actions/workflows/deployment.yml/badge.svg)](https://github.com/NimsHub/BioBeacon-Api/actions/workflows/deployment.yml)
+[![Deploy to On Premise server](https://github.com/NimsHub/bio-beacon-api/actions/workflows/on-premise-deployment.yml/badge.svg)](https://github.com/NimsHub/bio-beacon-api/actions/workflows/on-premise-deployment.yml)
+[![CD to Beanstalk](https://github.com/NimsHub/BioBeacon-Api/actions/workflows/deployment.yml/badge.svg)](https://github.com/NimsHub/BioBeacon-Api/actions/workflows/deployment.yml)
 <hr/>
 <p>
 Bio Beacon is a product developed as an undergraduate project. It is a Wireless Wearable Body Area Network which provides an IoT based 
