@@ -1,4 +1,4 @@
-name: Deploy to On Premise server
+name: CD to On Premise server
 
 on:
   push:
