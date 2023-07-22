@@ -10,12 +10,14 @@ services:
       COCKROACH_USER: ${COCKROACH_USER}
       COCKROACH_PASSWORD: ${COCKROACH_PASSWORD}
     volumes:
-      - /home/user/docker-volumes/bio-beacon-db-store:/cockroach/cockroach-data
-      - /home/user/docker-volumes:/docker-entrypoint.initdb.d
+      - /home/${USER}/docker-volumes/bio-beacon-db-store:/cockroach/cockroach-data
+      - /home/${USER}/docker-volumes:/docker-entrypoint.initdb.d
     working_dir: /cockroach
     ports:
       - "26257:26257"
       - "8080:8080"
+    networks:
+      - network
     command: start-single-node --insecure
 
   mosquitto:
@@ -24,10 +26,12 @@ services:
     ports:
         - "1883:1883" #default mqtt port
         - "9001:9001" #default mqtt port for websockets
+    networks:
+      - network
     volumes:
-        - /home/user/docker-volumes/mosquitto/config:/mosquitto/config:rw
-        - /home/user/docker-volumes/mosquitto/data:/mosquitto/data:rw
-        - /home/user/docker-volumes/mosquitto/log:/mosquitto/log:rw
+        - /home/${USER}/docker-volumes/mosquitto/config:/mosquitto/config:rw
+        - /home/${USER}/docker-volumes/mosquitto/data:/mosquitto/data:rw
+        - /home/${USER}/docker-volumes/mosquitto/log:/mosquitto/log:rw
 
   api:
     image: ghcr.io/nimshub/bio-beacon-api:latest
@@ -46,15 +50,20 @@ services:
       MAIL_PORT: ${MAIL_PORT}
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
+    networks:
+      - network
 
   nginx:
     image: ghcr.io/nimshub/nginx
     container_name: nginx
     ports:
-      - "80:80"
+      - ${NGINX_PORT}:80
+    networks:
+      - network
     depends_on:
       - api
 
 networks:
-  default:
-    name: mqtt5-network
+  network:
+    driver: bridge
+    name: bio-beacon-net
