@@ -65,6 +65,7 @@ public class AppConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:4200",
+                "http://192.248.50.238",
                 "https://d3bljg8pxxqty4.cloudfront.net",
                 "http://d3bljg8pxxqty4.cloudfront.net")); // Replace with the allowed origins for your application
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Configure the allowed HTTP methods
