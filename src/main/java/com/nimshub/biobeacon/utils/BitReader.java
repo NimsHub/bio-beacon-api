@@ -7,6 +7,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.nimshub.biobeacon.constants.Constants.*;
 
@@ -103,5 +105,19 @@ public class BitReader {
                 Base64
                         .getDecoder()
                         .decode(motionData), getModules(modules));
+    }
+
+    public String getVitalRecord(String vitalRecord) {
+        return createVitalRecord(
+                Base64
+                        .getDecoder()
+                        .decode(vitalRecord));
+    }
+
+    private String createVitalRecord(byte[] vitalData) {
+
+        return IntStream.range(0, vitalData.length)
+                .mapToObj(i -> Integer.toString(Byte.toUnsignedInt(vitalData[i])))
+                .collect(Collectors.joining(","));
     }
 }

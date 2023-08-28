@@ -115,9 +115,9 @@ public class SessionService {
 
         SessionDetails sessionDetails = SessionDetails.builder()
                 .session(session)
-                .bloodOxygen(request.getBloodOxygen())
-                .respirationRate(request.getRespirationRate())
-                .heartRate(request.getHeartRate())
+                .bloodOxygen(bitReader.getVitalRecord(request.getBloodOxygen()))
+                .respirationRate(bitReader.getVitalRecord(request.getRespirationRate()))
+                .heartRate(bitReader.getVitalRecord(request.getHeartRate()))
                 .ecg(request.getEcg())
                 .build();
 
