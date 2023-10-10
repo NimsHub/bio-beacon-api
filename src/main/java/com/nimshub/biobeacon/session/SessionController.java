@@ -39,7 +39,7 @@ public class SessionController {
     @Transactional(timeout = 300)
     public ResponseEntity<String> updateSession(@RequestBody UpdateSessionRequest request) {
         sessionService.updateSessionDetails(request);
-        logger.info("session from {} has been updated", request);
+        logger.info("session from {} has been updated", request.getDeviceId());
         return new ResponseEntity<>("session details has been updated", HttpStatus.OK);
     }
 
