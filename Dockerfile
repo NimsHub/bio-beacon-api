@@ -4,6 +4,14 @@ COPY src/main/resources/models app/models
 COPY src/main/resources/scripts app/scripts
 COPY src/main/resources/scalars app/scalars
 COPY src/main/resources/data app/data
+COPY src/main/resources/requirements.txt app/requirements.txt
 WORKDIR /app
+RUN apk add --update --no-cache python3
+RUN ln -sf python3 /usr/bin/python
+RUN python3 -m ensurepip
+RUN pip3 install --no-cache --upgrade pip setuptools
+RUN python3 -m venv env
+RUN source env/bin/activate
+RUN pip install -r requirements.txt
 EXPOSE 5000
 ENTRYPOINT ["java", "-jar","app.jar"]
