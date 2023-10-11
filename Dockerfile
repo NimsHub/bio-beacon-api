@@ -10,10 +10,10 @@ RUN apk add --update --no-cache python3
 RUN python3 -m venv env
 RUN source env/bin/activate
 RUN python3 -m ensurepip
-RUN pip -V
 RUN apk add build-base
 RUN apk add python3-dev
 RUN pip3 install --no-cache --upgrade pip setuptools
+RUN pip -V
 RUN pip install -r requirements.txt
 EXPOSE 5000
 ENTRYPOINT ["java", "-jar","app.jar"]
