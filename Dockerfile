@@ -9,6 +9,7 @@ WORKDIR /app
 RUN apk add --update --no-cache python3
 RUN ln -sf python3 /usr/bin/python
 RUN python3 -m ensurepip
+RUN apk add py-pip
 RUN pip3 install --no-cache --upgrade pip setuptools
 RUN python3 -m venv env
 RUN source env/bin/activate
