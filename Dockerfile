@@ -12,6 +12,6 @@ RUN python3 -m ensurepip
 RUN pip3 install --no-cache --upgrade pip setuptools
 RUN python3 -m venv env
 RUN source env/bin/activate
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 EXPOSE 5000
 ENTRYPOINT ["java", "-jar","app.jar"]
