@@ -9,4 +9,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableAsync
 @ConditionalOnProperty(name = "scheduling.enabled")
-public class SchedulerConfig { }
+public class SchedulerConfig {
+
+}

@@ -21,6 +21,7 @@ public class V2__CreateSequences extends BaseJavaMigration {
         createSessionSeq(context);
         createSessionDetailsSeq(context);
         createMotionDataSeq(context);
+        createActivityTimeSeq(context);
     }
 
     private void createUserSeq(Context context) throws SQLException {
@@ -81,6 +82,15 @@ public class V2__CreateSequences extends BaseJavaMigration {
                      context
                              .getConnection()
                              .prepareStatement("create sequence if not exists session_motion_seq")) {
+            statement.execute();
+        }
+    }
+
+    private void createActivityTimeSeq(Context context) throws SQLException {
+        try (PreparedStatement statement =
+                     context
+                             .getConnection()
+                             .prepareStatement("create sequence if not exists activity_time_seq")) {
             statement.execute();
         }
     }
