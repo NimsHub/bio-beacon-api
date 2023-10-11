@@ -44,6 +44,13 @@ spring:
 
 scheduling:
   enabled: false
+  fixed-rate: 10000
+
+ml:
+  enabled: ${ML_ENABLED}
+  scripts: ${SCRIPTS_LOCATION}
+  data: ${DATA_LOCATION}
+  process-directory: ${PROCESS_DIRECTORY}
 
 logging.level:
   org.hibernate: error

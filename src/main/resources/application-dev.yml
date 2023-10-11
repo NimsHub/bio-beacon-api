@@ -47,4 +47,11 @@ logging.level:
   com.nimshub: trace
 
 scheduling:
+  enabled: true
+  fixed-rate: 10000
+
+ml:
   enabled: false
+  scripts: /run/media/nims/Files/Dev/IdeaProjects/bio-beacon-api/src/main/resources
+  data: /run/media/nims/Files/Dev/IdeaProjects/bio-beacon-api/src/main/resources/data/temp.csv
+  process-directory: /run/media/nims/Files/Dev/IdeaProjects/bio-beacon-api/src/main/resources

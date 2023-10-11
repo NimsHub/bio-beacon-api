@@ -23,6 +23,10 @@ jobs:
             conf:
               - 'docker-compose.yml'
               - 'nginx/**'
+            ml:
+              - 'src/main/resources/scripts/**'
+              - 'src/main/resources/models/**'
+              - 'src/main/resources/scalars/**'
 
       - name: Set up JDK 17
         if: steps.changes.outputs.src == 'true'
@@ -56,6 +60,17 @@ jobs:
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.SERVER_KEY }}
           source: "docker-compose.yml,nginx/**"
+          target: ${{ secrets.SERVER_TARGET_LOCATION }}
+
+      - name: Copy ML Files
+        if: steps.changes.outputs.ml == 'true'
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          port: ${{ secrets.SERVER_PORT }}
+          key: ${{ secrets.SERVER_KEY }}
+          source: "src/main/resources/scripts/**,src/main/resources/scalars/**,src/main/resources/models/**"
           target: ${{ secrets.SERVER_TARGET_LOCATION }}
 
       - name: Pull and Redeploy the Application

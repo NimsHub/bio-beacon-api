@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +23,9 @@ public interface SessionRepository extends JpaRepository<Session, Integer> {
     Optional<Session> findBySessionId(@NotNull UUID sessionId);
 
     Optional<Session> findTopByDeviceIdAndIsCompleteFalseOrderByCreateDateTimeDesc(Long deviceId);
+
+    Optional<Session> findTopByAnalysisStatusEquals(boolean analysisStatus);
+    Optional<Session> findTopByIsCompleteTrueAndAnalysisStatusFalse();
 
     @Modifying
     @Query(nativeQuery = true, value =

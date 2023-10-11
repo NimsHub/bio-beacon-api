@@ -34,6 +34,8 @@ public class Session {
     private Long deviceId;
     @Column(columnDefinition = "boolean default false")
     private boolean isComplete;
+    @Column(columnDefinition = "boolean default false")
+    private boolean analysisStatus;
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
     private Long sessionDuration;
