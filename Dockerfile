@@ -7,13 +7,15 @@ COPY src/main/resources/data app/data
 COPY src/main/resources/requirements.txt app/requirements.txt
 WORKDIR /app
 RUN apk add --update --no-cache python3
-RUN python3 -m venv env
-RUN source env/bin/activate
+RUN ln -sf python3 /usr/bin/python
 RUN python3 -m ensurepip
+RUN apk add py-pip
+RUN pip -v
+RUN pip3 install --no-cache --upgrade pip setuptools
 RUN apk add build-base
 RUN apk add python3-dev
-RUN pip3 install --no-cache --upgrade pip setuptools
-RUN pip -V
+RUN python3 -m venv env
+RUN source env/bin/activate
 RUN pip install -r requirements.txt
 EXPOSE 5000
 ENTRYPOINT ["java", "-jar","app.jar"]
