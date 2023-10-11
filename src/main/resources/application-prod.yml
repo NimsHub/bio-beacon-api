@@ -43,7 +43,7 @@ spring:
     enabled: true
 
 scheduling:
-  enabled: false
+  enabled: true
   fixed-rate: 10000
 
 ml:
