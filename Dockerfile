@@ -10,6 +10,7 @@ RUN apk add --update --no-cache python3
 RUN python3 -m ensurepip
 RUN python3 -m venv env
 RUN source env/bin/activate
+RUN apk add py-pip
 RUN python --version
 RUN pip --version
 RUN apk add --no-cache --virtual .build-deps \
