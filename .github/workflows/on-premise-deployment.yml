@@ -81,7 +81,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           port: ${{ secrets.SERVER_PORT }}
           key: ${{ secrets.SERVER_KEY }}
-          command_timeout: "20m"
+          command_timeout: "40m"
           script: |
             cd ${{ secrets.SERVER_TARGET_LOCATION}}
             docker pull ghcr.io/${{secrets.GHCR_USER}}/bio-beacon-api:latest

@@ -25,4 +25,5 @@ WORKDIR /app
 
 EXPOSE 5000
 
+# Command to run the Spring Boot application
 ENTRYPOINT ["java", "-jar","app.jar"]
