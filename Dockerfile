@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jre-alpine
+FROM openjdk:17-alpine
 COPY target/bio-beacon-0.0.1-SNAPSHOT.jar app/app.jar
 COPY src/main/resources/models app/models
 COPY src/main/resources/scripts app/scripts
