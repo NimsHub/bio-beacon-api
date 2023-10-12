@@ -12,6 +12,7 @@ RUN python3 -m venv env
 RUN source env/bin/activate
 RUN apk add py-pip
 RUN python3 --version
+RUN pip3 install --no-cache --upgrade pip setuptools
 RUN pip3 --version
 RUN apk add --no-cache --virtual .build-deps \
 		gnupg \
@@ -43,7 +44,6 @@ RUN apk add --no-cache --virtual .build-deps \
 		xz-dev \
 		zlib-dev \
 	;
-RUN pip3 install --no-cache --upgrade pip setuptools
 RUN apk add build-base
 RUN apk add python3-dev
 RUN pip3 install -r requirements.txt
