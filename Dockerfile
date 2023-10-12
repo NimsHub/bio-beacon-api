@@ -12,7 +12,7 @@ RUN python3 -m venv env
 RUN source env/bin/activate
 RUN apk add py-pip
 RUN python3 --version
-RUN pip --version
+RUN pip3 --version
 RUN apk add --no-cache --virtual .build-deps \
 		gnupg \
 		tar \
@@ -46,6 +46,6 @@ RUN apk add --no-cache --virtual .build-deps \
 RUN pip3 install --no-cache --upgrade pip setuptools
 RUN apk add build-base
 RUN apk add python3-dev
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 EXPOSE 5000
 ENTRYPOINT ["java", "-jar","app.jar"]
