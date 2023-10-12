@@ -1,4 +1,4 @@
-FROM openjdk:17-alpine
+FROM openjdk:17
 COPY target/bio-beacon-0.0.1-SNAPSHOT.jar app/app.jar
 COPY src/main/resources/models app/models
 COPY src/main/resources/scripts app/scripts
