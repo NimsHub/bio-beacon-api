@@ -15,19 +15,14 @@
 
 
 
-# Use a base image that includes both Java and Python
 FROM openjdk:17-slim
 
 COPY target/bio-beacon-0.0.1-SNAPSHOT.jar app/app.jar
 
-# Install Python and required libraries
 RUN apt-get update && apt-get install -y python3 python3-pip && pip3 install pandas scikit-learn tensorflow
 
-# Set the working directory for your application
 WORKDIR /app
 
-# Expose the Spring Boot application's port
 EXPOSE 5000
 
-# Command to run the Spring Boot application
 ENTRYPOINT ["java", "-jar","app.jar"]
