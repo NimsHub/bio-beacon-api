@@ -11,7 +11,7 @@ RUN python3 -m ensurepip
 RUN python3 -m venv env
 RUN source env/bin/activate
 RUN apk add py-pip
-RUN python --version
+RUN python3 --version
 RUN pip --version
 RUN apk add --no-cache --virtual .build-deps \
 		gnupg \
