@@ -118,7 +118,7 @@ public class SessionService {
                 .bloodOxygen(bitReader.getVitalRecord(request.getBloodOxygen()))
                 .respirationRate(bitReader.getVitalRecord(request.getRespirationRate()))
                 .heartRate(bitReader.getVitalRecord(request.getHeartRate()))
-                .ecg(request.getEcg())
+                .ecg(bitReader.getVitalRecord(request.getEcg()))
                 .build();
 
         Map<Integer, String> data = bitReader.getMotionData(request.getModules(), request.getMotionData());
