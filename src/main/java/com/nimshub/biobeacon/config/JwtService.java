@@ -66,6 +66,7 @@ public class JwtService {
 
     /**
      * This method generates Jwt token with User details
+     *
      * @param userDetails : UserDetails
      * @return : String
      */
@@ -75,6 +76,7 @@ public class JwtService {
 
     /**
      * This method generates Jwt token with User details and extraClaims
+     *
      * @param extraClaims : Map<String, Object>
      * @param userDetails : UserDetails
      * @return : String
@@ -97,6 +99,7 @@ public class JwtService {
 
     /**
      * This method checks if the token is expired or not
+     *
      * @param token : String
      * @return boolean
      */
@@ -106,6 +109,7 @@ public class JwtService {
 
     /**
      * This method extract the expiration time out of token
+     *
      * @param token : String
      * @return Date
      */

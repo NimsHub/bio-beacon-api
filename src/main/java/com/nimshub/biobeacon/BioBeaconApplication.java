@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class BioBeaconApplication {
 
+    @Value("${server.port}")
+    String port;
+
     public static void main(String[] args) {
         SpringApplication.run(BioBeaconApplication.class, args);
     }
 
-    @Value("${server.port}")
-    String port;
-
     @RestController
-    public class helloController {
+    public class HelloController {
         @GetMapping("/")
         public String hello() {
             return String.format("Up and Running on Port %s ...", port);

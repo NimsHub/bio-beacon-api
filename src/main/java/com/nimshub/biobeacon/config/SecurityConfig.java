@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/actuator/**")
                 .hasAuthority("ADMIN")
-                .requestMatchers("/api/v1/auth/**", "/","/message/**",
+                .requestMatchers("/api/v1/auth/**", "/", "/message/**",
                         "/api/v1/sessions/update-session",
                         "/api/v1/coaches/get-all",
                         "/api/v1/coaches/create-coach",

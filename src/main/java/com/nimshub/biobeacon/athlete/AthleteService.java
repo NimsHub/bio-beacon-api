@@ -146,6 +146,7 @@ public class AthleteService {
 
     /**
      * This method get athlete details by athlete ID
+     *
      * @param athleteId : UUID
      * @return : AthleteDetailsResponse
      */
@@ -170,7 +171,8 @@ public class AthleteService {
 
     /**
      * This method updates the athlete
-     * @param request : CreateAthleteRequest
+     *
+     * @param request    : CreateAthleteRequest
      * @param authHeader : String
      * @return : AuthenticationResponse
      */

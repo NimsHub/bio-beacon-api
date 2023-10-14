@@ -21,7 +21,7 @@ public class Task {
 
     @Scheduled(fixedRateString = "${scheduling.fixed-rate}")
     @Async
-    void testRun() throws InterruptedException {
+    void runTask() {
         logger.info("Running scheduled job...");
         sessionRepository.findTopByIsCompleteTrueAndAnalysisStatusFalse().ifPresent(session -> {
             Integer sessionId = session.getId();

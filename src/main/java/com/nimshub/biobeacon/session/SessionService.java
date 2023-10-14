@@ -161,6 +161,7 @@ public class SessionService {
 
     /**
      * This method retrieves motion data of a session
+     *
      * @param sessionId : UUID
      * @return SessionMotionDataResponse
      */
