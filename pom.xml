@@ -98,16 +98,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.tensorflow</groupId>
-            <artifactId>tensorflow</artifactId>
-            <version>1.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.tensorflow</groupId>
-            <artifactId>tensorflow-core-platform</artifactId>
-            <version>0.5.0</version>
-        </dependency>
 
     </dependencies>
 
@@ -130,23 +120,23 @@
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.8</version>
                 <executions>
-                    <execution>
-                        <id>prepare</id>
-                        <phase>package</phase>
-                        <configuration>
-                            <tasks>
-                                <copy todir="${project.build.directory}/${project.build.finalName}/" overwrite="false">
-                                    <fileset dir="./" includes=".platform/**"/>
-                                    <fileset dir="${project.build.directory}" includes="*.jar"/>
-                                </copy>
-                                <zip destfile="${project.build.directory}/${project.build.finalName}.zip"
-                                     basedir="${project.build.directory}/${project.build.finalName}"/>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
+<!--                    <execution>-->
+<!--                        <id>prepare</id>-->
+<!--                        <phase>package</phase>-->
+<!--                        <configuration>-->
+<!--                            <tasks>-->
+<!--                                <copy todir="${project.build.directory}/${project.build.finalName}/" overwrite="false">-->
+<!--                                    <fileset dir="./" includes=".platform/**"/>-->
+<!--                                    <fileset dir="${project.build.directory}" includes="*.jar"/>-->
+<!--                                </copy>-->
+<!--                                <zip destfile="${project.build.directory}/${project.build.finalName}.zip"-->
+<!--                                     basedir="${project.build.directory}/${project.build.finalName}"/>-->
+<!--                            </tasks>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>run</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
                 </executions>
             </plugin>
         </plugins>

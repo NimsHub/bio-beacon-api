@@ -47,7 +47,7 @@ scheduling:
   fixed-rate: 10000
 
 ml:
-  enabled: ${ML_ENABLED}
+  script-init-command: "python3 "
   scripts: ${SCRIPTS_LOCATION}
   data: ${DATA_LOCATION}
   process-directory: ${PROCESS_DIRECTORY}

@@ -37,22 +37,29 @@ public class ModelService {
 
     @Value("${ml.process-directory}")
     String processDirectory;
+    @Value("${ml.script-init-command}")
+    String scriptInitCommand;
 
+    /**
+     * This method initialize the Machine learning model
+     *
+     * @return : String
+     */
     public String doAnalyze() {
 
         String outputCsv = "";
         try {
             String scriptName = "scripts/model5.py";
 
-            String[] command = {BASH, COMMAND, SCRIPT + scriptName};
+            String[] command = {BASH, COMMAND, scriptInitCommand + scriptName};
 
             ProcessBuilder processBuilder = new ProcessBuilder(command);
 
             processBuilder.directory(new File(processDirectory));
 
             Process process = processBuilder.start();
-
-            logger.info("Executing command : {}", Arrays.toString(command));
+            String executionCommand = Arrays.toString(command);
+            logger.info("Executing command : {}", executionCommand);
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
             String line;
@@ -75,27 +82,32 @@ public class ModelService {
             }
 
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage(), e);
 
         }
         return outputCsv;
     }
 
+    /**
+     * This method read the predicted output from the model and predict the activities
+     *
+     * @param id : Integer
+     */
     public void predictActivities(Integer id) {
         Converters converter = new Converters();
         String output = doAnalyze();
 
         List<String> predictionList = converter.getStringList(output);
 
-        int cyclingTime = Collections.frequency(predictionList, "0")*10;
-        int pushUpTime = Collections.frequency(predictionList, "1")*10;
-        int runTime = Collections.frequency(predictionList, "2")*10;
-        int squatTime = Collections.frequency(predictionList, "3")*10;
-        int tableTennisTime = Collections.frequency(predictionList, "4")*10;
-        int walkTime = Collections.frequency(predictionList, "5")*10;
+        int cyclingTime = Collections.frequency(predictionList, CYCLING) * SAMPLING_SIZE;
+        int pushUpTime = Collections.frequency(predictionList, PUSH_UP) * SAMPLING_SIZE;
+        int runTime = Collections.frequency(predictionList, RUNNING) * SAMPLING_SIZE;
+        int squatTime = Collections.frequency(predictionList, SQUAT) * SAMPLING_SIZE;
+        int tableTennisTime = Collections.frequency(predictionList, TABLE_TENNIS) * SAMPLING_SIZE;
+        int walkTime = Collections.frequency(predictionList, WALKING) * SAMPLING_SIZE;
 
         Session session = sessionRepository.findById(id)
-                .orElseThrow(()-> new SessionNotFoundException("Session not found"));
+                .orElseThrow(() -> new SessionNotFoundException("Session not found"));
 
         ActivityTime activityTime = ActivityTime.builder()
                 .session(session)

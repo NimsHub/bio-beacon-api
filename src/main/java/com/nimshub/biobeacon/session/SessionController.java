@@ -49,6 +49,7 @@ public class SessionController {
         logger.info("getting session details of the session : {}", id);
         return new ResponseEntity<>(sessionDetailsResponse, HttpStatus.OK);
     }
+
     @GetMapping("/session-motion-data/{id}")
     public ResponseEntity<SessionMotionDataResponse> getSessionMotionDataBySessionId(@PathVariable("id") UUID id) {
         SessionMotionDataResponse motionData = sessionService.getMotionData(id);

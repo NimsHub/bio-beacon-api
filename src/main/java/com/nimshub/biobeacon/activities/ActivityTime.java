@@ -21,7 +21,7 @@ public class ActivityTime {
     @SequenceGenerator(name = "ActivityTime_SEQ", sequenceName = "ActivityTime_SEQ", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ActivityTime_SEQ")
     private Integer id;
-    @OneToOne(cascade = CascadeType.DETACH,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "session", referencedColumnName = "id", foreignKey =
     @ForeignKey(name = "fk_session_id")
     )

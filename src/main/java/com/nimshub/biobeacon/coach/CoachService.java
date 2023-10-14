@@ -104,7 +104,8 @@ public class CoachService {
 
     /**
      * This method updates the coach
-     * @param request : CreateCoachRequest
+     *
+     * @param request    : CreateCoachRequest
      * @param authHeader : String
      * @return : AuthenticationResponse
      */

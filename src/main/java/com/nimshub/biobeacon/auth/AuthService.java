@@ -2,7 +2,6 @@ package com.nimshub.biobeacon.auth;
 
 import com.nimshub.biobeacon.config.JwtService;
 import com.nimshub.biobeacon.exceptions.UserAlreadyExistsException;
-import com.nimshub.biobeacon.user.Role;
 import com.nimshub.biobeacon.user.User;
 import com.nimshub.biobeacon.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -78,9 +77,9 @@ public class AuthService {
                     .formatted(request.getEmail()));
         }
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("role",user.getRole());
+        extraClaims.put("role", user.getRole());
 
-        var jwtToken = jwtService.generateToken(extraClaims,user);
+        var jwtToken = jwtService.generateToken(extraClaims, user);
         logger.info("User authentication success");
 
         return AuthenticationResponse.builder()
@@ -89,7 +88,8 @@ public class AuthService {
     }
 
     /**
-     *  This method updates user
+     * This method updates user
+     *
      * @param user : User
      * @return AuthenticationResponse
      */

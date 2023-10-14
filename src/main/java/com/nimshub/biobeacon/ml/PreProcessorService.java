@@ -36,6 +36,11 @@ public class PreProcessorService {
     String data;
     Logger logger = LoggerFactory.getLogger(PreProcessorService.class);
 
+    /**
+     * This method pre-process the data to feed in to the ML model
+     *
+     * @param session :Session
+     */
     public void preProcessData(Session session) {
         Converters converter = new Converters();
         SessionMotionData motionData = motionDataRepository.findSessionMotionDataBySession(session)
@@ -76,13 +81,18 @@ public class PreProcessorService {
         saveFile(builder.toString());
     }
 
+    /**
+     * This method saves the preprocessed data file
+     *
+     * @param csvString : String
+     */
     private void saveFile(String csvString) {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(data))) {
             writer.write(csvString);
             logger.info("CSV file saved successfully at {}", data);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 

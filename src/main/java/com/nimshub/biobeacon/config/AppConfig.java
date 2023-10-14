@@ -61,7 +61,7 @@ public class AppConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(){
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList(
                 "http://localhost:4200",
@@ -69,7 +69,7 @@ public class AppConfig {
                 "https://d3bljg8pxxqty4.cloudfront.net",
                 "http://d3bljg8pxxqty4.cloudfront.net")); // Replace with the allowed origins for your application
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE")); // Configure the allowed HTTP methods
-        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization","X-Device-Id","X-Api-Key")); // Configure the allowed headers
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization", "X-Device-Id", "X-Api-Key")); // Configure the allowed headers
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

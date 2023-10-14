@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SessionMotionDataRepository extends JpaRepository<SessionMotionData,Integer> {
+public interface SessionMotionDataRepository extends JpaRepository<SessionMotionData, Integer> {
     Optional<SessionMotionData> findSessionMotionDataBySession(Session session);
 }

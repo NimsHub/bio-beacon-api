@@ -3,21 +3,19 @@ package com.nimshub.biobeacon.utils;
 import org.springframework.lang.NonNull;
 
 public class Acceleration {
+    private String x;
+    private String y;
+    private String z;
     public Acceleration(@NonNull String x, @NonNull String y, @NonNull String z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
-
     public Acceleration(String data) {
         this.x = data;
         this.y = data;
         this.z = data;
     }
-
-    private String x;
-    private String y;
-    private String z;
 
     public String getX() {
         return x;
